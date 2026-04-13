@@ -93,7 +93,7 @@ public partial class Pages_Record : System.Web.UI.Page
                 using (OracleCommand cmd = new OracleCommand(@" 
                     SELECT * FROM (
                         SELECT 
-                            BARCODE, RESNAME, ADDRESS, RCAT_NM, PRCNT_NM, BLOCK_NM, TBIL_AMT, TBIL_AMT_REC, TBIL_AMT_DIF,
+                            BARCODE, RESNAME, ADDRESS, PRCNT_NM, BLOCK_NM, TBIL_AMT, TBIL_AMT_REC, TBIL_AMT_DIF,
                             MBIL_AMT, EBIL_AMT, WBIL_AMT, GBIL_AMT, RBIL_AMT, BBIL_AMT,
                             RIS_AMT, SECURITY_AMT, ENFORCEMENT_AMT,
                             MBIL_AMT_REC, EBIL_AMT_REC, WBIL_AMT_REC, GBIL_AMT_REC,
@@ -160,9 +160,8 @@ public partial class Pages_Record : System.Web.UI.Page
             /* ROW 1 - CLIENT DETAILS (The Main Frozen Header) */
             TableHeaderCell clientHeader = new TableHeaderCell();
             clientHeader.Text = "CLIENT DETAILS";
-            clientHeader.ColumnSpan = 9;
+            clientHeader.ColumnSpan = 8;
             clientHeader.HorizontalAlign = HorizontalAlign.Center;
-            clientHeader.CssClass = "sticky-col col-barcode"; // Starts at 0px left
             row1.Cells.Add(clientHeader);
 
             gv.Controls[0].Controls.AddAt(0, row1);
@@ -192,15 +191,6 @@ public partial class Pages_Record : System.Web.UI.Page
     {
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
-            // 1. APPLY STICKY CLASSES TO THE FIRST 6 CELLS
-            string[] stickyClasses = { "col-barcode", "col-name", "col-address", "col-cat", "col-prcnt", "col-block" };
-
-            for (int i = 0; i < 6; i++)
-            {
-                e.Row.Cells[i].CssClass += " sticky-col " + stickyClasses[i];
-            }
-
-            //[cite_start];// 2. KEEP YOUR EXISTING COLOR LOGIC [cite: 20, 21]
 
             // Get IS_DC Value
             int isDisconnected = Convert.ToInt32(DataBinder.Eval(e.Row.DataItem, "IS_DC"));
@@ -218,16 +208,6 @@ public partial class Pages_Record : System.Web.UI.Page
                 e.Row.CssClass = "approved-reconnect-row";
             }
 
-        }
-
-        // Also apply classes to the standard sub-headers (RowType == Header)
-        if (e.Row.RowType == DataControlRowType.Header)
-        {
-            string[] stickyClasses = { "col-barcode", "col-name", "col-address", "col-cat", "col-prcnt", "col-block" };
-            for (int i = 0; i < 6; i++)
-            {
-                e.Row.Cells[i].CssClass += " sticky-col " + stickyClasses[i];
-            }
         }
     }
     
