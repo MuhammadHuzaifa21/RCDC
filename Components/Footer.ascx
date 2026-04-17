@@ -2,6 +2,6 @@
 
 <div class="footer">
 
-    <p>© 2026 DCRC. All Rights Reserved</p>
+    <p>© 2026 RCDC. All Rights Reserved.</p>
 
 </div>

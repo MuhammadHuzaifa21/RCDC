@@ -4,7 +4,7 @@
 
     <a href="#" class="logo-link">
         <div class="logo">
-            DCRC
+            RCDC
         </div>
     </a>    
 
