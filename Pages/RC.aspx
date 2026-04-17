@@ -1,7 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="RC.aspx.cs" Inherits="Pages_RC" %>
 
 <%@ Register Src="../Components/Header.ascx" TagName="Header" TagPrefix="uc" %> 
-<%@ Register Src="../Components/Footer.ascx" TagName="Footer" TagPrefix="uc" %> 
 
 <!DOCTYPE html>
 <html>
@@ -76,7 +75,7 @@
 
         .btn-clear { background-color: #ee7070; flex: 3;   /* 30% */ }
 
-        .btnRC { background-color: #a4ef86; margin-top: 10px; color: #000 }
+        .btnRC { background-color: #a4ef86; margin-top: 10px; color: #000; width: 100%;}
 
         /* ROW - COL */
         .row { display: flex; gap: 20px; margin: 10px 0 5px 0;  }
@@ -94,6 +93,23 @@
         .totals-table td{ padding:8px; border:1px solid #ddd; font-size: 15px}
 
         .totals-table{ margin-top:15px; }
+
+        /* COLLAPSIBLE */
+        .collapse-header {
+            background: #2f4050;
+            color: white;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .collapse-header:hover { background: #1f2937; }
+        .collapse-body { display: none; /* hidden by default */ margin-top: 10px; }
 
     </style>
 
@@ -154,59 +170,57 @@
         <asp:Panel ID="pnlRecords" runat="server" Visible="false">
             <div class="form-panel">
 
-                <%--<h2 style="text-align:center;">Records</h2>--%>
-
                 <div class="record-card" id="recordCard">
 
                     <table class="info-table">
                         <tr>
                             <th>Name</th>
                             <th>Address</th>
-                            <th>Barcode</th>
+                            <th>Meter No</th>
+                            <th>Arrears</th>
                         </tr>
 
                         <tr>
                             <td><asp:Label ID="lblName" runat="server"/></td>
                             <td><asp:Label ID="lblAddress" runat="server"/></td>
-                            <td><asp:Label ID="lblBarcode" runat="server"/></td>
+                            <td><asp:Label ID="lblMeterNo" runat="server"/></td>
+                            <td><asp:Label ID="lblArrears" runat="server"/></td>
                         </tr>
                     </table>
 
-                    <%--<b>Name:</b>
-                    <asp:Label ID="lblName" runat="server"/><br/>
+                    <%-- Hide This Part - Drop Down --%>                     
+                    <!-- COLLAPSIBLE HEADER -->
+                    <div class="collapse-header" onclick="toggleSection()">
+                        <span>📄 View Details</span>
+                        <span id="toggleIcon">▼</span>
+                    </div>
 
-                    <b>Address:</b>
-                    <asp:Label ID="lblAddress" runat="server"/><br/>
+                    <!-- COLLAPSIBLE CONTENT -->
+                    <div id="billSection" class="collapse-body">
 
-                    <b>Barcode:</b>
-                    <asp:Label ID="lblBarcode" runat="server"/>--%>
+                        <table class="info-table">
+                            <tr>
+                                <th>Barcode</th>
+                            </tr>
+                            <tr>
+                                <td><asp:Label ID="lblBarcode" runat="server"/></td>
+                            </tr>
+                        </table>
 
-                    <asp:GridView ID="gvBillBreakup"
-                                runat="server"
-                                AutoGenerateColumns="false"
-                                CssClass="grid-style">
+                        <asp:GridView ID="gvBillBreakup"
+                            runat="server"
+                            AutoGenerateColumns="false"
+                            CssClass="grid-style">
 
-                        <Columns>
-                        <asp:BoundField DataField="BillType" HeaderText="Bill Type"/>
-                        <asp:BoundField DataField="BillAmount" HeaderText="Amount"/>
-                        <asp:BoundField DataField="ReceivedAmount" HeaderText="Received"/>
-                        </Columns>
+                            <Columns>
+                                <asp:BoundField DataField="BillType" HeaderText="Bill Type"/>
+                                <asp:BoundField DataField="BillAmount" HeaderText="Amount"/>
+                                <asp:BoundField DataField="ReceivedAmount" HeaderText="Received"/>
+                            </Columns>
 
-                    </asp:GridView>
+                        </asp:GridView>  
 
-                    <table class="totals-table">
-                        <tr>
-                            <th>Total Bill</th>
-                            <th>Total Rec</th>
-                            <th>Unpaid</th>
-                        </tr>
-
-                        <tr>
-                            <td><asp:Label ID="lblTotalBill" runat="server"/></td>
-                            <td><asp:Label ID="lblTotalRec" runat="server"/></td>
-                            <td><asp:Label ID="lblUnpaid" runat="server"/></td>
-                        </tr>
-                    </table>                    
+                    </div>                                    
 
                     <!-- STATUS --> 
                     <div class="row"> 
@@ -238,17 +252,12 @@
                                     OnClick="btnNext_Click"
                                     CssClass="button"/>
                     </div>
-
-                
-                    
                      
                 </div>
 
             </div>
             
-        </asp:Panel>
-
-        
+        </asp:Panel>        
     </form>
 
     <%-- SCRIPT --%>
@@ -272,6 +281,19 @@
 
         });
 
+        /* HIDDEN DETAILS */
+        function toggleSection() {
+            var section = document.getElementById("billSection");
+            var icon = document.getElementById("toggleIcon");
+
+            if (section.style.display === "none" || section.style.display === "") {
+                section.style.display = "block";
+                icon.innerHTML = "▲";
+            } else {
+                section.style.display = "none";
+                icon.innerHTML = "▼";
+            }
+        }
     </script>
 </body>
 </html>

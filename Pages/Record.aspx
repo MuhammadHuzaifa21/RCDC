@@ -305,9 +305,6 @@
                                         <asp:BoundField DataField="GBIL_AMT" HeaderText="GAS" /> 
                                         <asp:BoundField DataField="RBIL_AMT" HeaderText="RENT" /> 
                                         <asp:BoundField DataField="BBIL_AMT" HeaderText="BNB" /> 
-                                        <asp:BoundField DataField="RIS_AMT" HeaderText="RIS" /> 
-                                        <asp:BoundField DataField="SECURITY_AMT" HeaderText="SEC" /> 
-                                        <asp:BoundField DataField="ENFORCEMENT_AMT" HeaderText="ENFOR" /> 
                                                                         
                                         <asp:BoundField DataField="MBIL_AMT_REC" HeaderText="MAINT" /> 
                                         <asp:BoundField DataField="EBIL_AMT_REC" HeaderText="ELEC" /> 
@@ -315,9 +312,7 @@
                                         <asp:BoundField DataField="GBIL_AMT_REC" HeaderText="GAS" /> 
                                         <asp:BoundField DataField="RBIL_AMT_REC" HeaderText="RENT" /> 
                                         <asp:BoundField DataField="BBIL_AMT_REC" HeaderText="BNB" /> 
-                                        <asp:BoundField DataField="RIS_AMT_REC" HeaderText="RIS" /> 
-                                        <asp:BoundField DataField="SECURITY_AMT_REC" HeaderText="SEC" /> 
-                                        <asp:BoundField DataField="ENFORCEMENT_AMT_REC" HeaderText="ENFOR" />                                
+                               
                                     </Columns> 
                                 </asp:GridView> 
 

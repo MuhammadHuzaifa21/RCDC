@@ -19,6 +19,8 @@ public partial class Components_Header : System.Web.UI.UserControl
     {
         string page = System.IO.Path.GetFileName(Request.Path);
 
+        
+
         if (page == "Login.aspx")
         {
             lnkLogin.Visible = false;
@@ -27,14 +29,14 @@ public partial class Components_Header : System.Web.UI.UserControl
             divConnection.Visible = false;
 
             lnkRecords.Visible = false;
-            btnLogout.Visible = false;            
+            btnLogout.Visible = false;
         }
 
         if (page == "DC.aspx")
         {
             lnkLogin.Visible = false;
             lnkRC.Visible = true;
-            lnkRecords.Visible = true;
+            //lnkRecords.Visible = true;
             btnLogout.Visible = true; 
         }
 
@@ -42,7 +44,7 @@ public partial class Components_Header : System.Web.UI.UserControl
         {
             lnkLogin.Visible = false;
             lnkDC.Visible = true;
-            lnkRecords.Visible = true;
+            //lnkRecords.Visible = true;
             btnLogout.Visible = true;            
         }
         
@@ -52,15 +54,6 @@ public partial class Components_Header : System.Web.UI.UserControl
             lnkDC.Visible = true;
             lnkRC.Visible = true;
             lnkRecords.Visible = false;
-            btnLogout.Visible = true;
-        }
-
-        if (page == "RIS.aspx" || page == "Security.aspx" || page == "Enforcement.aspx")
-        {
-            lnkLogin.Visible = false;
-            lnkDC.Visible = true;
-            lnkRC.Visible = true;
-            lnkRecords.Visible = true;
             btnLogout.Visible = true;
         }
     }

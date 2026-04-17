@@ -95,9 +95,8 @@ public partial class Pages_Record : System.Web.UI.Page
                         SELECT 
                             BARCODE, RESNAME, ADDRESS, PRCNT_NM, BLOCK_NM, TBIL_AMT, TBIL_AMT_REC, TBIL_AMT_DIF,
                             MBIL_AMT, EBIL_AMT, WBIL_AMT, GBIL_AMT, RBIL_AMT, BBIL_AMT,
-                            RIS_AMT, SECURITY_AMT, ENFORCEMENT_AMT,
                             MBIL_AMT_REC, EBIL_AMT_REC, WBIL_AMT_REC, GBIL_AMT_REC,
-                            RBIL_AMT_REC, BBIL_AMT_REC, RIS_AMT_REC, SECURITY_AMT_REC, ENFORCEMENT_AMT_REC,                            
+                            RBIL_AMT_REC, BBIL_AMT_REC,
                             IS_DC, IS_RC, RC_TMP,
         
                             ROW_NUMBER() OVER (ORDER BY TBIL_AMT DESC) AS RN
@@ -169,7 +168,7 @@ public partial class Pages_Record : System.Web.UI.Page
             /* ROW 1 - C2 */
             TableHeaderCell bill_amnt = new TableHeaderCell();
             bill_amnt.Text = "BILL AMOUNT";
-            bill_amnt.ColumnSpan = 9;
+            bill_amnt.ColumnSpan = 6;
             bill_amnt.HorizontalAlign = HorizontalAlign.Center;
             row1.Cells.Add(bill_amnt);
 
@@ -178,7 +177,7 @@ public partial class Pages_Record : System.Web.UI.Page
             /* ROW 1 - C3 */
             TableHeaderCell bill_amnt_rec = new TableHeaderCell();
             bill_amnt_rec.Text = "BILL AMOUNT RECEIVED";
-            bill_amnt_rec.ColumnSpan = 9;
+            bill_amnt_rec.ColumnSpan = 6;
             bill_amnt_rec.HorizontalAlign = HorizontalAlign.Center;
             row1.Cells.Add(bill_amnt_rec);
 

@@ -108,9 +108,6 @@ public partial class Pages_RC : System.Web.UI.Page
         lblNoRecord.Text = "";
 
         LoadBlocks(ddlPrecinct.SelectedValue);
-
-        lblStatus.Text = "";
-        lblNoRecord.Text = "";
     }
 
     /* SHOW RECORD */
@@ -134,9 +131,12 @@ public partial class Pages_RC : System.Web.UI.Page
 
         DataRow row = dt.Rows[index];
 
-        lblBarcode.Text = row["BARCODE"].ToString();
         lblName.Text = row["RESNAME"].ToString();
-        lblAddress.Text = row["ADDRESS"].ToString();
+        lblAddress.Text = row["ADDRESS"].ToString(); //  + " " + row["PRCNT_NM"].ToString() + " " + row["BLOCK_NM"].ToString()  
+        lblMeterNo.Text = row["METERNO"].ToString();
+        lblArrears.Text = row["TBIL_AMT_DIF"].ToString();
+
+        lblBarcode.Text = row["BARCODE"].ToString();   
 
         DataTable bill = new DataTable();
 
@@ -154,59 +154,10 @@ public partial class Pages_RC : System.Web.UI.Page
         gvBillBreakup.DataSource = bill;
         gvBillBreakup.DataBind();
 
-        lblTotalBill.Text = row["TBIL_AMT"].ToString();
-        lblTotalRec.Text = row["TBIL_AMT_REC"].ToString();
-        lblUnpaid.Text = row["TBIL_AMT_DIF"].ToString();
-
-        if (Convert.ToDecimal(lblUnpaid.Text) < 0)
-            lblUnpaid.ForeColor = System.Drawing.Color.Red;
+        if (Convert.ToDecimal(lblArrears.Text) < 0)
+            lblArrears.ForeColor = System.Drawing.Color.Red;
 
         lblCounter.Text = (index + 1) + " / " + dt.Rows.Count;
-    }
-
-    /* BUTTONS */    
-    // Next 
-    protected void btnNext_Click(object sender, EventArgs e)
-    {
-        lblStatus.Text = "";
-
-        DataTable dt = (DataTable)Session["RC_records"];
-
-        int index = (int)Session["RC_index"];
-
-        if (index < dt.Rows.Count - 1)
-            index++;
-
-        Session["RC_index"] = index;
-
-        pcdShowRecord();
-    }
-    
-    // Prev
-    protected void btnPrev_Click(object sender, EventArgs e)
-    {
-        lblStatus.Text = "";
-
-        int index = (int)Session["RC_index"];
-
-        if (index > 0)
-            index--;
-
-        Session["RC_index"] = index;
-
-        pcdShowRecord();
-    }
-
-    // Swipe
-    void HandleSwipe()
-    {
-        string target = Request["__EVENTTARGET"];
-
-        if (target == "SwipeNext")
-            btnNext_Click(null, null);
-
-        if (target == "SwipePrev")
-            btnPrev_Click(null, null);
     }
     
     // Proceed
@@ -216,7 +167,6 @@ public partial class Pages_RC : System.Web.UI.Page
 
         string precinct = ddlPrecinct.SelectedValue;
         string block = ddlBlock.SelectedValue;
-        //int rcCount = 0;
 
         DataTable dt = new DataTable();
 
@@ -228,22 +178,22 @@ public partial class Pages_RC : System.Web.UI.Page
                                 BARCODE,RESNAME,ADDRESS,
                                 MBIL_AMT,EBIL_AMT,WBIL_AMT,GBIL_AMT,RBIL_AMT,BBIL_AMT,
                                 MBIL_AMT_REC,EBIL_AMT_REC,WBIL_AMT_REC,GBIL_AMT_REC,RBIL_AMT_REC,BBIL_AMT_REC,
-                                TBIL_AMT,TBIL_AMT_REC,TBIL_AMT_DIF
+                                TBIL_AMT,TBIL_AMT_REC,TBIL_AMT_DIF, METERNO
                             FROM DCRC
                             WHERE TBIL_AMT_DIF < 0 AND IS_DC = 1 AND IS_RC = 0 AND RC_TMP = 1";
 
-            string query_RC_Count = @"
-                                SELECT COUNT(*) 
-                                FROM DCRC
-                                WHERE TBIL_AMT_DIF < 0 AND IS_DC = 1 AND RC_TMP = 1";
+//            string query_RC_Count = @"
+//                                SELECT COUNT(*) 
+//                                FROM DCRC
+//                                WHERE TBIL_AMT_DIF < 0 AND IS_DC = 1 AND RC_TMP = 1";
 
             if (!string.IsNullOrEmpty(precinct))
                 query += " AND PRCNT_NM=:precinct";
-                query_RC_Count += " AND PRCNT_NM = :precinct";
+                //query_RC_Count += " AND PRCNT_NM = :precinct";
 
             if (!string.IsNullOrEmpty(block))
                 query += " AND BLOCK_NM=:block";
-                query_RC_Count += " AND BLOCK_NM = :block";
+                //query_RC_Count += " AND BLOCK_NM = :block";
 
             query += " ORDER BY TBIL_AMT_DIF";
 
@@ -384,6 +334,67 @@ public partial class Pages_RC : System.Web.UI.Page
         }
     }
 
+    /* BUTTONS */
+    // Next 
+    protected void btnNext_Click(object sender, EventArgs e)
+    {
+        lblStatus.Text = "";
+
+        DataTable dt = (DataTable)Session["RC_records"];
+
+        int index = (int)Session["RC_index"];
+
+        if (index < dt.Rows.Count - 1)
+            index++;
+
+        Session["RC_index"] = index;
+
+        pcdShowRecord();
+    }
+
+    // Prev
+    protected void btnPrev_Click(object sender, EventArgs e)
+    {
+        lblStatus.Text = "";
+
+        int index = (int)Session["RC_index"];
+
+        if (index > 0)
+            index--;
+
+        Session["RC_index"] = index;
+
+        pcdShowRecord();
+    }
+
+    // Swipe
+    void HandleSwipe()
+    {
+        string target = Request["__EVENTTARGET"];
+
+        if (target == "SwipeNext")
+            btnNext_Click(null, null);
+
+        if (target == "SwipePrev")
+            btnPrev_Click(null, null);
+    }
+
+    protected void btnClear_Click(object sender, EventArgs e)
+    {
+        ddlPrecinct.Text = "";
+        ddlBlock.Text = "";
+
+        lblStatus.Text = "";
+        lblNoRecord.Text = "";
+
+        Session["RC_records"] = null;
+        Session["RC_index"] = null;
+
+        pcdShowRecord(); // will automatically show "No records"
+    }
+
+
+
     //private void UpdateChildTable(OracleConnection con, OracleTransaction trans, string tableName, string barcode)
     //{
     //    string query = "UPDATE " + tableName + " SET IS_RC = 1 WHERE REG_NO = :barcode";
@@ -398,14 +409,5 @@ public partial class Pages_RC : System.Web.UI.Page
     //        cmd.ExecuteNonQuery();
     //    }
     //}
-
-    protected void btnClear_Click(object sender, EventArgs e)
-    {
-        Session["RC_records"] = null;
-        Session["RC_index"] = null;
-
-        pcdShowRecord(); // will automatically show "No records"
-    }
-
 
 }
