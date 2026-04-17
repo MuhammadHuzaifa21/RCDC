@@ -291,7 +291,7 @@ public partial class Pages_DC : System.Web.UI.Page
         ScriptManager.RegisterStartupScript(this, this.GetType(), "RedirectAfterDelay", redirectScript, true);
     }
 
-    //CHECK DISCONNECTION STATUS BY METER NO.
+    // CHECK DISCONNECTION STATUS BY METER NO.
     protected void btnCheckStatus_Click(object sender, EventArgs e)
     {
         string meterNo = txtCheckMeter.Text.Trim();
@@ -438,20 +438,20 @@ public partial class Pages_DC : System.Web.UI.Page
         }
     }
 
-    private void UpdateChildTable(OracleConnection con, OracleTransaction trans, string tableName, string barcode)
-    {
-        string query = "UPDATE " + tableName + " SET IS_DC = 1 WHERE REG_NO = :barcode";
+    //private void UpdateChildTable(OracleConnection con, OracleTransaction trans, string tableName, string barcode)
+    //{
+    //    string query = "UPDATE " + tableName + " SET IS_DC = 1 WHERE REG_NO = :barcode";
 
-        using (OracleCommand cmd = new OracleCommand(query, con))
-        {
-            cmd.Transaction = trans;
-            cmd.BindByName = true;
+    //    using (OracleCommand cmd = new OracleCommand(query, con))
+    //    {
+    //        cmd.Transaction = trans;
+    //        cmd.BindByName = true;
 
-            cmd.Parameters.Add("barcode", barcode);
+    //        cmd.Parameters.Add("barcode", barcode);
 
-            cmd.ExecuteNonQuery();
-        }
-    }
+    //        cmd.ExecuteNonQuery();
+    //    }
+    //}
 
     /* PAGINATION */
     // Next 
@@ -504,6 +504,9 @@ public partial class Pages_DC : System.Web.UI.Page
         lblStatus.Text = "";
         lblMessage.Text = "";
         lblNoRecord.Text = "";
+
+        txtCheckMeter.Text = "";
+        lblStatusResult.Text = "";
 
         txtSearchBarcode.Text = "";
 

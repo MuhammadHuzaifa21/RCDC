@@ -26,25 +26,14 @@
 
         .label{ font-weight:bold; }
         .input{ width:100%;padding:8px;margin-top:5px;margin-bottom:10px;border:1px solid #ccc;border-radius:4px; }
-
-        /*.btn{
-            font-size:15px;
-            font-weight:600;
-            width:100%;
-            padding:10px;
-            background:#2c7be5;
-            border:none;
-            color:white;
-            border-radius:4px;
-            cursor:pointer;
-            }*/
-
+        
         .grid-style{width:100%;border-collapse:collapse;margin-top:15px;}
         .grid-style th{background:#2f4050;color:white;padding:8px;}
         .grid-style td{padding:8px;border:1px solid #ddd;}
 
-        .nav{text-align:center;margin-top:15px;}
+        .nav{text-align:center;margin-top:15px;}        
 
+        /* BUTTONS */
         .nav .button{
             width:20%;
             padding:10px;
@@ -56,7 +45,17 @@
             margin:0 10px;
         }
 
-        /* BUTTONS */
+        .button-pagination {
+            width: 20%;
+            padding: 10px;
+            background: #2c7be5;
+            border: none;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0 5px 10px 5px;
+        }
+
         .btn-section { display: flex; gap: 10px; }
 
         .btn {
@@ -188,6 +187,38 @@
                         </tr>
                     </table>
 
+                    <%-- BUTTONS MOVED UP --%>
+                    <!-- STATUS --> 
+                    <div class="row"> 
+                        <div class="col"> 
+                            <asp:Label ID="lblStatus" runat="server" /> 
+                        </div> 
+                    </div>
+
+                    <%-- DC BUTTON --%>
+                    <asp:Button ID="btnReconnect"
+                                runat="server"
+                                Text="Reconnect"
+                                OnClick="btnReconnect_Click"
+                                CssClass="btn btnRC"/>
+
+                    <%-- PAGINATION --%>
+                    <div class="nav">
+                        <asp:Button ID="btnPrev"
+                                    runat="server"
+                                    Text="Previous"
+                                    OnClick="btnPrev_Click"
+                                    CssClass="button-pagination"/>
+
+                        <asp:Label ID="lblCounter" runat="server"/>
+
+                        <asp:Button ID="btnNext"
+                                    runat="server"
+                                    Text="Next"
+                                    OnClick="btnNext_Click"
+                                    CssClass="button-pagination"/>
+                    </div>
+
                     <%-- Hide This Part - Drop Down --%>                     
                     <!-- COLLAPSIBLE HEADER -->
                     <div class="collapse-header" onclick="toggleSection()">
@@ -222,36 +253,7 @@
 
                     </div>                                    
 
-                    <!-- STATUS --> 
-                    <div class="row"> 
-                        <div class="col"> 
-                            <asp:Label ID="lblStatus" runat="server" /> 
-                        </div> 
-                    </div>
-
-                    <%-- DC BUTTON --%>
-                    <asp:Button ID="btnReconnect"
-                                runat="server"
-                                Text="Reconnect"
-                                OnClick="btnReconnect_Click"
-                                CssClass="btn btnRC"/>
-
-                    <%-- PAGINATION --%>
-                    <div class="nav">
-                        <asp:Button ID="btnPrev"
-                                    runat="server"
-                                    Text="Previous"
-                                    OnClick="btnPrev_Click"
-                                    CssClass="button"/>
-
-                        <asp:Label ID="lblCounter" runat="server"/>
-
-                        <asp:Button ID="btnNext"
-                                    runat="server"
-                                    Text="Next"
-                                    OnClick="btnNext_Click"
-                                    CssClass="button"/>
-                    </div>
+                    
                      
                 </div>
 

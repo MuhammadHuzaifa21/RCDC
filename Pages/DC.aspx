@@ -41,12 +41,10 @@
             border-radius: 4px;
         }
 
-            .input:focus {
-                border-color: #2c7be5;
-                box-shadow: 0 0 0 3px rgba(44,123,229,0.15);
-            }
-
-
+        .input:focus {
+            border-color: #2c7be5;
+            box-shadow: 0 0 0 3px rgba(44,123,229,0.15);
+        }
 
         .grid-style {
             width: 100%;
@@ -54,32 +52,43 @@
             margin-top: 15px;
         }
 
-            .grid-style th {
-                background: #2f4050;
-                color: white;
-                padding: 8px;
-            }
+        .grid-style th {
+            background: #2f4050;
+            color: white;
+            padding: 8px;
+        }
 
-            .grid-style td {
-                padding: 8px;
-                border: 1px solid #ddd;
-            }
+        .grid-style td {
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
 
         .nav {
             text-align: center;
             margin-top: 15px;
         }
 
-            .nav .button {
-                width: 20%;
-                padding: 10px;
-                background: #2c7be5;
-                border: none;
-                color: white;
-                border-radius: 4px;
-                cursor: pointer;
-                margin: 0 10px;
-            }
+        .nav .button {
+            width: 20%;
+            padding: 10px;
+            background: #2c7be5;
+            border: none;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+
+        .button-pagination {
+            width: 20%;
+            padding: 10px;
+            background: #2c7be5;
+            border: none;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0 5px 10px 5px;
+        }
 
         /* ROW - COL */
         .row {
@@ -92,7 +101,6 @@
             flex: 1;
         }
 
-
         /* TABLE */
         .info-table {
             width: 100%;
@@ -101,17 +109,17 @@
             text-align: center;
         }
 
-            .info-table th {
-                background: #2f4050;
-                color: white;
-                padding: 8px;
-            }
+        .info-table th {
+            background: #2f4050;
+            color: white;
+            padding: 8px;
+        }
 
-            .info-table td {
-                padding: 8px;
-                border: 1px solid #ddd;
-                font-size: 15px;
-            }
+        .info-table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            font-size: 15px;
+        }
 
         .search-box {
             padding: 8px;
@@ -126,10 +134,10 @@
             margin-top: 5px;
         }
 
-            .search-box:focus {
-                border-color: #2c7be5;
-                box-shadow: 0 0 0 3px rgba(44,123,229,0.15);
-            }
+        .search-box:focus {
+            border-color: #2c7be5;
+            box-shadow: 0 0 0 3px rgba(44,123,229,0.15);
+        }
 
         /* BUTTONS */
         .btn-section {
@@ -160,21 +168,34 @@
 
         .btnDC {
             background-color: #ee7070;
-            margin-top: 10px;
+            margin-top: 5px;
             width: 100%;
         }
         /* Check Status Button */
         .btn-check-status {
             font-size: 15px;
             font-weight: 600;
-            padding: 10px 25px;
+            padding: 8px 20px;
             background: #2c7be5;
             border: none;
             color: white;
             border-radius: 4px;
             cursor: pointer;
-            width: 100%;
+            width: stretch;
             transition: background 0.2s ease;
+        }
+
+        .input-check-status {
+            width: stretch;
+            padding: 8px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .input-check-status:focus {
+            border-color: #2c7be5;
+            box-shadow: 0 0 0 3px rgba(44,123,229,0.15);
         }
 
         /* Status result panel text styling */
@@ -182,6 +203,7 @@
             font-size: 14px;
             line-height: 1.6;
         }
+        
         /* COLLAPSIBLE */
         .collapse-header {
             background: #2f4050;
@@ -196,7 +218,7 @@
             font-weight: 600;
         }
 
-            .collapse-header:hover {
+        .collapse-header:hover {
                 background: #1f2937;
             }
 
@@ -278,6 +300,39 @@
                         </tr>
                     </table>
 
+                    <%-- BUTTON MOVED UP --%>
+                    <!-- STATUS -->
+                    <div class="row">
+                        <div class="col">
+                            <asp:Label ID="lblStatus" runat="server" />
+                        </div>
+                    </div>
+
+                    <%-- DC BUTTON --%>
+                    <asp:Button ID="btnDisconnect"
+                        runat="server"
+                        Text="Disconnect"
+                        OnClick="btnDisconnect_Click"
+                        CssClass="btn btnDC" />
+
+                    <%-- PAGINATION --%>
+                    <div class="nav">
+                        <asp:Button ID="btnPrev"
+                            runat="server"
+                            Text="Previous"
+                            OnClick="btnPrev_Click"
+                            CssClass="button-pagination" />
+
+                        <asp:Label ID="lblCounter" runat="server" />
+
+                        <asp:Button ID="btnNext"
+                            runat="server"
+                            Text="Next"
+                            OnClick="btnNext_Click"
+                            CssClass="button-pagination" />
+                    </div>
+
+
                     <%-- Hide This Part - Drop Down --%>
                     <!-- COLLAPSIBLE HEADER -->
                     <div class="collapse-header" onclick="toggleSection()">
@@ -315,40 +370,12 @@
 
                     <%-- Till Here --%>
 
-                    <!-- STATUS -->
-                    <div class="row">
-                        <div class="col">
-                            <asp:Label ID="lblStatus" runat="server" />
-                        </div>
-                    </div>
-
-                    <%-- DC BUTTON --%>
-                    <asp:Button ID="btnDisconnect"
-                        runat="server"
-                        Text="Disconnect"
-                        OnClick="btnDisconnect_Click"
-                        CssClass="btn btnDC" />
-
-                    <%-- PAGINATION --%>
-                    <div class="nav">
-                        <asp:Button ID="btnPrev"
-                            runat="server"
-                            Text="Previous"
-                            OnClick="btnPrev_Click"
-                            CssClass="button" />
-
-                        <asp:Label ID="lblCounter" runat="server" />
-
-                        <asp:Button ID="btnNext"
-                            runat="server"
-                            Text="Next"
-                            OnClick="btnNext_Click"
-                            CssClass="button" />
-                    </div>
+                    
 
                 </div>
             </div>
         </asp:Panel>
+
         <!-- DISCONNECTION STATUS CHECKER -->
         <div class="form-panel" style="margin-bottom: 20px;">
             <div class="record-card">
@@ -356,7 +383,7 @@
                 <div class="row" style="align-items: flex-end;">
                     <div class="col">
                         <asp:Label ID="lblCheckMeter" runat="server" Text="Enter Meter Number" CssClass="label" />
-                        <asp:TextBox ID="txtCheckMeter" runat="server" CssClass="input" placeholder="Enter Meter Number" Style="width: 100%;" />
+                        <asp:TextBox ID="txtCheckMeter" runat="server" CssClass="input-check-status" placeholder="Enter Meter Number" Style="width: stretch;" />
                     </div>
                     <div class="col">
                         <asp:Button ID="btnCheckStatus" runat="server" Text="Check Status" CssClass="btn-check-status" OnClick="btnCheckStatus_Click" />
@@ -367,6 +394,7 @@
                 </asp:Panel>
             </div>
         </div>
+
     </form>
 
     <%-- SCRIPT --%>
