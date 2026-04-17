@@ -18,23 +18,6 @@ public partial class Pages_Login : System.Web.UI.Page
         string id = txtID.Text;
         string password = txtPassword.Text;
 
-        //var users = new Dictionary<string, string>
-        //{
-        //    { "1", "1" },
-        //    { "25128", "123" },
-        //    { "test", "pass" }
-        //};
-
-        //if (users.ContainsKey(id) && users[id] == password)
-        //{
-        //    Session["User"] = id;
-        //    Response.Redirect("~/Pages/DC.aspx");
-        //}
-        //else
-        //{
-        //    lblMessage.Text = "Account not found. Please register first.";
-        //}
-
         if (id == "1" && password == "1") 
         { 
             Session["User"] = id;

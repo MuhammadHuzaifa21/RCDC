@@ -38,7 +38,7 @@
     function toggleDropdown(btn) {
         var dropdown = btn.nextElementSibling;
 
-        // Close all other dropdowns
+        // Close all other dropdowns --
         document.querySelectorAll(".dropdown-content").forEach(function (el) {
             if (el !== dropdown) {
                 el.style.display = "none";
