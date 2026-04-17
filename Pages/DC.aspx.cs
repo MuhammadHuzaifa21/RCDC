@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Drawing;
 using System.Web.UI;
 using System.Web.Configuration;
 using System.Web.UI.WebControls;
@@ -288,6 +289,76 @@ public partial class Pages_DC : System.Web.UI.Page
             }, 3000);";
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "RedirectAfterDelay", redirectScript, true);
+    }
+
+    //CHECK DISCONNECTION STATUS BY METER NO.
+    protected void btnCheckStatus_Click(object sender, EventArgs e)
+    {
+        string meterNo = txtCheckMeter.Text.Trim();
+
+        if (string.IsNullOrEmpty(meterNo))
+        {
+            lblStatusResult.Text = "Please enter a Meter Number.";
+            lblStatusResult.ForeColor = System.Drawing.Color.Red;
+            pnlStatusResult.Visible = true;
+            return;
+        }
+
+        using (OracleConnection con = new OracleConnection(connStr))
+        {
+            string query = @"
+            SELECT RESNAME, IS_DC, DC_BY, DC_DT, METERNO, PRCNT_NM, BLOCK_NM
+            FROM DCRC
+            WHERE METERNO = :meterNo
+            AND ROWNUM = 1";
+
+            using (OracleCommand cmd = new OracleCommand(query, con))
+            {
+                cmd.Parameters.Add(":meterNo", OracleDbType.Varchar2).Value = meterNo;
+                con.Open();
+                using (OracleDataReader dr = cmd.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        string resname = dr["RESNAME"].ToString();
+                        int isDc = Convert.ToInt32(dr["IS_DC"]);
+                        string dcBy = dr["DC_BY"] == DBNull.Value ? "N/A" : dr["DC_BY"].ToString();
+                        string dcDt = dr["DC_DT"] == DBNull.Value ? "N/A" : Convert.ToDateTime(dr["DC_DT"]).ToString("dd-MMM-yyyy HH:mm");
+                        string precinct = dr["PRCNT_NM"].ToString();
+                        string block = dr["BLOCK_NM"].ToString();
+
+                        string status = isDc == 1 ? "DISCONNECTED" : "ACTIVE (Not Disconnected)";
+                        System.Drawing.Color statusColor = isDc == 1 ? System.Drawing.Color.Red : System.Drawing.Color.Green;
+
+                        // Build result HTML without string interpolation
+                        string resultHtml = string.Format(
+                            "<strong>Meter:</strong> {0}<br/><strong>Consumer:</strong> {1}<br/><strong>Precinct / Block:</strong> {2} / {3}<br/><strong>Status:</strong> <span style='color:{4};'>{5}</span><br/>",
+                            meterNo, resname, precinct, block,
+                            System.Drawing.ColorTranslator.ToHtml(statusColor), status);
+
+                        if (isDc == 1)
+                        {
+                            resultHtml += string.Format(
+                                "<strong>Disconnected By (User ID):</strong> {0}<br/><strong>Disconnected On:</strong> {1}<br/>",
+                                dcBy, dcDt);
+                        }
+                        else
+                        {
+                            resultHtml += "<em>No disconnection record found for this meter.</em>";
+                        }
+
+                        lblStatusResult.Text = resultHtml;
+                        lblStatusResult.ForeColor = System.Drawing.Color.Black;
+                    }
+                    else
+                    {
+                        lblStatusResult.Text = string.Format("Meter Number '{0}' not found in DCRC table.", meterNo);
+                        lblStatusResult.ForeColor = System.Drawing.Color.Red;
+                    }
+                    pnlStatusResult.Visible = true;
+                }
+            }
+        }
     }
 
     /* TO AVOID DOUBLE SUBMISSION */
