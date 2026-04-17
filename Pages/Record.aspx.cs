@@ -53,25 +53,25 @@ public partial class Pages_Record : System.Web.UI.Page
         {
             lblNoAccess.Text = "Session expired. Please log in again.";
             lblNoAccess.ForeColor = System.Drawing.Color.Red;
-
             lblNoAccess.Visible = true;
             return false;
         }
 
-        if (int.TryParse(Session["User"].ToString(), out userId))
-        {
-            if (userId != 25128)
-            {
-                lblNoAccess.Text = "You are not authorized to access this page.";
-                lblNoAccess.ForeColor = System.Drawing.Color.Red;
-
-                lblNoAccess.Visible = true;
-                return false;
-            }
-        }
-        else
+        if (!int.TryParse(Session["User"].ToString(), out userId))
         {
             lblNoAccess.Text = "Invalid session user.";
+            lblNoAccess.ForeColor = System.Drawing.Color.Red;
+            lblNoAccess.Visible = true;
+            return false;
+        }
+
+        // ✅ Allowed users list
+        int[] allowedUsers = { 25128, 1};
+
+        if (!allowedUsers.Contains(userId))
+        {
+            lblNoAccess.Text = "You are not authorized to access this page.";
+            lblNoAccess.ForeColor = System.Drawing.Color.Red;
             lblNoAccess.Visible = true;
             return false;
         }

@@ -6,7 +6,7 @@
     <html> 
         <head id="Head1" runat="server"> 
             <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
-            <title>DCRC - Records</title> 
+            <title>RCDC - Records</title> 
             <link href="../CSS/style.css" rel="stylesheet" /> 
         
             <style>             

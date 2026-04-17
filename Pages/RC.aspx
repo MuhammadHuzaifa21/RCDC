@@ -7,7 +7,7 @@
 <head id="Head1" runat="server">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>DCRC - RC</title>
+    <title>RCDC - RC</title>
 
     <link href="../CSS/style.css" rel="stylesheet"/>
 
