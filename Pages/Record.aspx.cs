@@ -24,8 +24,60 @@ public partial class Pages_Record : System.Web.UI.Page
 
         if (!IsPostBack)
         {
-            LoadGrid(1);
+            bool allowed = HasFormAccess();
+
+            if (allowed)
+            {
+                lblNoAccess.Visible = false;
+
+                LoadGrid(1);
+                gvRecords.Visible = true;
+            }
+            else
+            {
+                formPanel.Visible = false;
+                gvRecords.Visible = false;
+
+                txtSearchBarcode.Visible = false;
+                txtSearchPrecinct.Visible = false;
+                btnClear.Visible = false;
+            }
         }
+    }
+
+    private bool HasFormAccess()
+    {
+        int userId;
+
+        if (Session["User"] == null)
+        {
+            lblNoAccess.Text = "Session expired. Please log in again.";
+            lblNoAccess.ForeColor = System.Drawing.Color.Red;
+
+            lblNoAccess.Visible = true;
+            return false;
+        }
+
+        if (int.TryParse(Session["User"].ToString(), out userId))
+        {
+            if (userId != 25128)
+            {
+                lblNoAccess.Text = "You are not authorized to access this page.";
+                lblNoAccess.ForeColor = System.Drawing.Color.Red;
+
+                lblNoAccess.Visible = true;
+                return false;
+            }
+        }
+        else
+        {
+            lblNoAccess.Text = "Invalid session user.";
+            lblNoAccess.Visible = true;
+            return false;
+        }
+
+        lblNoAccess.Visible = false;
+        return true;
     }
 
     protected void SearchChanged(object sender, EventArgs e)

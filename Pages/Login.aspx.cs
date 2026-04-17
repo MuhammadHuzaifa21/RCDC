@@ -18,8 +18,8 @@ public partial class Pages_Login : System.Web.UI.Page
         string id = txtID.Text;
         string password = txtPassword.Text;
 
-        if (id == "1" && password == "1") 
-        { 
+        if (id == "1" && password == "1" || id == "25128" && password == "123") 
+        {
             Session["User"] = id;
             Response.Redirect("~/Pages/DC.aspx"); 
         } 

@@ -215,15 +215,41 @@
                 .disconnected-row { background-color: #ffe6e6 !important; }
                 .approved-reconnect-row { background-color: #cffbb8 !important; }
 
+                .auth-message {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 2vh;
+                    margin-top: 10px;
+                    margin-bottom: 0;
+                }
+
+                .auth-message span,
+                .auth-message label {
+                    font-size: 18px;
+                    font-weight: 500;
+                    color: #e74c3c;
+                    background: #fff5f5;
+                    padding: 6px 10px;
+                    border: 1px solid #ffcccc;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+                }
+
             </style> 
 
         </head> 
         <body> 
             <form id="form2" runat="server"> 
                 <uc:Header ID="Header1" runat="server" /> 
-
+                
+                <div class="auth-message">
+                    <asp:Label ID="lblNoAccess" runat="server" />
+                </div> 
+                
                 <div class="container"> 
-                    <div class="form-panel"> 
+                    
+                    <div class="form-panel" id="formPanel" runat="server"> 
                         <div class="top-bar">
 
                             <!-- LEFT: SEARCH -->
