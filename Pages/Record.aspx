@@ -213,6 +213,7 @@
 
                 /* COLOR */ 
                 .disconnected-row { background-color: #ffe6e6 !important; }
+                .illegal-row { background-color: #f8d7da !important; }
                 .approved-reconnect-row { background-color: #cffbb8 !important; }
 
                 .auth-message {

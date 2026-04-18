@@ -254,6 +254,11 @@ public partial class Pages_Record : System.Web.UI.Page
                 e.Row.CssClass = "disconnected-row";                                
             }
 
+            if (isDisconnected == 2)
+            {
+                e.Row.CssClass = "illegal-row";
+            }
+
             if (reconnectTemp == 1)
             {
                 e.Row.CssClass = "approved-reconnect-row";

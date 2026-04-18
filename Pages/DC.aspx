@@ -376,25 +376,6 @@
             </div>
         </asp:Panel>
 
-        <!-- DISCONNECTION STATUS CHECKER -->
-        <div class="form-panel" style="margin-bottom: 20px;">
-            <div class="record-card">
-                <h3 style="margin-top: 0; color: black;">Check Disconnection Status</h3>
-                <div class="row" style="align-items: flex-end;">
-                    <div class="col">
-                        <asp:Label ID="lblCheckMeter" runat="server" Text="Enter Meter Number" CssClass="label" />
-                        <asp:TextBox ID="txtCheckMeter" runat="server" CssClass="input-check-status" placeholder="Enter Meter Number" Style="width: stretch;" />
-                    </div>
-                    <div class="col">
-                        <asp:Button ID="btnCheckStatus" runat="server" Text="Check Status" CssClass="btn-check-status" OnClick="btnCheckStatus_Click" />
-                    </div>
-                </div>
-                <asp:Panel ID="pnlStatusResult" runat="server" Visible="false" Style="margin-top: 15px; padding: 15px; background: #e9ecef; border-radius: 6px; border-left: 4px solid #2c7be5;">
-                    <asp:Label ID="lblStatusResult" runat="server" />
-                </asp:Panel>
-            </div>
-        </div>
-
     </form>
 
     <%-- SCRIPT --%>

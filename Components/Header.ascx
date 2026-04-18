@@ -25,6 +25,7 @@
             </div>
         </div>
         
+        <asp:HyperLink ID="lnkStatus" runat="server" NavigateUrl="../Pages/Status.aspx" class="hide-on-mobile">Check Status</asp:HyperLink>
         <asp:HyperLink ID="lnkRecords" runat="server" NavigateUrl="../Pages/Record.aspx" class="hide-on-mobile">Records</asp:HyperLink>
                 
         <asp:LinkButton ID="btnLogout" runat="server" OnClick="btnLogout_Click">Logout</asp:LinkButton>     

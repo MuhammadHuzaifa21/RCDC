@@ -56,6 +56,15 @@ public partial class Components_Header : System.Web.UI.UserControl
             lnkRecords.Visible = false;
             btnLogout.Visible = true;
         }
+
+        if (page == "Status.aspx")
+        {
+            lnkLogin.Visible = false;
+            lnkDC.Visible = true;
+            lnkRC.Visible = true;
+            lnkRecords.Visible = true;
+            btnLogout.Visible = true;
+        }
     }
 
 
