@@ -27,7 +27,7 @@ public partial class Components_Header : System.Web.UI.UserControl
             btnUpdate.Visible = false;
 
             divConnection.Visible = false;
-
+            lnkStatus.Visible = false;
             lnkRecords.Visible = false;
             btnLogout.Visible = false;
         }

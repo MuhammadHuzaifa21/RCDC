@@ -1,5 +1,21 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Header.ascx.cs" Inherits="Components_Header" %>
 
+<style>
+@media screen and (max-width: 768px) {
+    .header {
+        flex-direction: column !important;
+        padding: 10px !important;
+    }
+    
+    .menu {
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 10px !important;
+        margin-top: 10px !important;
+    }
+}
+</style>
+
 <div class="header">
 
     <a href="#" class="logo-link">
@@ -25,7 +41,7 @@
             </div>
         </div>
         
-        <asp:HyperLink ID="lnkStatus" runat="server" NavigateUrl="../Pages/Status.aspx" class="hide-on-mobile">Check Status</asp:HyperLink>
+        <asp:HyperLink ID="lnkStatus" runat="server" NavigateUrl="../Pages/Status.aspx">Check Status</asp:HyperLink>
         <asp:HyperLink ID="lnkRecords" runat="server" NavigateUrl="../Pages/Record.aspx" class="hide-on-mobile">Records</asp:HyperLink>
                 
         <asp:LinkButton ID="btnLogout" runat="server" OnClick="btnLogout_Click">Logout</asp:LinkButton>     

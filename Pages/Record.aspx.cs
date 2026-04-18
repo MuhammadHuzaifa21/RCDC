@@ -256,7 +256,7 @@ public partial class Pages_Record : System.Web.UI.Page
 
             if (isDisconnected == 2)
             {
-                e.Row.CssClass = "illegal-row";
+                e.Row.CssClass = "updated-row"; 
             }
 
             if (reconnectTemp == 1)
