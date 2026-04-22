@@ -62,10 +62,10 @@
             outline: none;
         }
 
-            .search-box:focus {
-                border-color: #2c7be5;
-                box-shadow: 0 0 0 3px rgba(44,123,229,0.15);
-            }
+        .search-box:focus {
+            border-color: #2c7be5;
+            box-shadow: 0 0 0 3px rgba(44,123,229,0.15);
+        }
 
         .btn {
             font-size: 14px;
@@ -79,13 +79,13 @@
             transition: background 0.2s ease, transform 0.1s ease;
         }
 
-            .btn:hover {
-                background: #1a6ad4;
-            }
+        .btn:hover {
+            background: #1a6ad4;
+        }
 
-            .btn:active {
-                transform: scale(0.97);
-            }
+        .btn:active {
+            transform: scale(0.97);
+        }
 
         .btnCancel {
             background: #e8e8e8;
@@ -94,9 +94,9 @@
             border: 1px solid #333;
         }
 
-            .btnCancel:hover {
-                background: #d5d5d5;
-            }
+        .btnCancel:hover {
+            background: #d5d5d5;
+        }
 
         /* ── CENTER: TITLE ─────────────────────────────────────── */
         .title-section {
@@ -104,13 +104,13 @@
             flex: 1;
         }
 
-            .title-section h2 {
-                margin: 0;
-                font-size: 28px;
-                font-weight: 600;
-                color: #2f4050;
-                letter-spacing: -0.3px;
-            }
+        .title-section h2 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+            color: #2f4050;
+            letter-spacing: -0.3px;
+        }
 
         /* ── RIGHT: COUNTS ─────────────────────────────────────── */
         .count-section {
@@ -152,54 +152,54 @@
             transition: background 0.25s ease, box-shadow 0.25s ease;
         }
 
-            .export-btn:hover {
-                background: #1ab394;
-                box-shadow: 0 3px 10px rgba(26,179,148,0.35);
-            }
+        .export-btn:hover {
+            background: #1ab394;
+            box-shadow: 0 3px 10px rgba(26,179,148,0.35);
+        }
 
-            /* DEFAULT TEXT — slides out to the LEFT */
-            .export-btn .default-text {
-                display: flex;
-                align-items: center;
-                gap: 4px;
-                transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
-                transform: translateX(0);
-                opacity: 1;
-            }
+        /* DEFAULT TEXT — slides out to the LEFT */
+        .export-btn .default-text {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+            transform: translateX(0);
+            opacity: 1;
+        }
 
-            .export-btn:hover .default-text {
-                transform: translateX(-110%);
-                opacity: 0;
-            }
+        .export-btn:hover .default-text {
+            transform: translateX(-110%);
+            opacity: 0;
+        }
 
-            /* HOVER TEXT — slides IN from the RIGHT */
-            .export-btn .hover-text {
-                position: absolute;
-                left: 0;
-                right: 0;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 6px;
-                font-size: 12px;
-                font-weight: 700;
-                letter-spacing: 0.08em;
-                transform: translateX(110%);
-                opacity: 0;
-                transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
-                pointer-events: none;
-            }
+        /* HOVER TEXT — slides IN from the RIGHT */
+        .export-btn .hover-text {
+            position: absolute;
+            left: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            transform: translateX(110%);
+            opacity: 0;
+            transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+            pointer-events: none;
+        }
 
-            .export-btn:hover .hover-text {
-                transform: translateX(0);
-                opacity: 1;
-            }
+        .export-btn:hover .hover-text {
+            transform: translateX(0);
+            opacity: 1;
+        }
 
-            .export-btn .hover-text svg {
-                width: 13px;
-                height: 13px;
-                flex-shrink: 0;
-            }
+        .export-btn .hover-text svg {
+            width: 13px;
+            height: 13px;
+            flex-shrink: 0;
+        }
 
         /* ─────────────────── */
 
@@ -225,28 +225,28 @@
             table-layout: auto;
         }
 
-            .grid-style th {
-                background-color: #2f4050;
-                color: white;
-                text-align: center;
-                padding: 6px;
-                border: 1px solid #d0d0d0;
-                white-space: nowrap;
-            }
+        .grid-style th {
+            background-color: #2f4050;
+            color: white;
+            text-align: center;
+            padding: 6px;
+            border: 1px solid #d0d0d0;
+            white-space: nowrap;
+        }
 
-            .grid-style td {
-                padding: 6px;
-                border: 1px solid #d0d0d0;
-                white-space: nowrap;
-            }
+        .grid-style td {
+            padding: 6px;
+            border: 1px solid #d0d0d0;
+            white-space: nowrap;
+        }
 
-            .grid-style tr:hover {
-                background: #f2f2f2;
-            }
+        .grid-style tr:hover {
+            background: #f2f2f2;
+        }
 
-            .grid-style td:nth-child(8) {
-                background-color: #fff7cc; /* light yellow */
-            }
+        .grid-style td:nth-child(8) {
+            background-color: #fff7cc; /* light yellow */
+        }
 
         .grid-wrapper::-webkit-scrollbar {
             height: 8px;
@@ -265,32 +265,32 @@
             bottom: 0;
         }
 
-            .grid-pager a,
-            .grid-pager span {
-                margin: 0 5px;
-                padding: 6px 10px;
-                border-radius: 5px;
-                text-decoration: none;
-                border: 1px solid #ccc;
-                color: #333;
-            }
+        .grid-pager a,
+        .grid-pager span {
+            margin: 0 5px;
+            padding: 6px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            border: 1px solid #ccc;
+            color: #333;
+        }
 
-            .grid-pager span {
-                background: #2f4050;
-                color: white;
-                font-weight: bold;
-            }
+        .grid-pager span {
+            background: #2f4050;
+            color: white;
+            font-weight: bold;
+        }
 
-            .grid-pager td:nth-child(8) {
-                background: #f3f4f6;
-                color: white;
-            }
+        .grid-pager td:nth-child(8) {
+            background: #f3f4f6;
+            color: white;
+        }
 
 
         .disconnected-row {
             background-color: #ffe6e6 !important;
         }
-        /* Red/pink - for IS_DC = 1 */
+        /* Red - for IS_DC = 1 */
         .updated-row {
             background-color: #ffeaa7 !important;
         }
@@ -308,17 +308,17 @@
             margin-bottom: 0;
         }
 
-            .auth-message span,
-            .auth-message label {
-                font-size: 18px;
-                font-weight: 500;
-                color: #e74c3c;
-                background: #fff5f5;
-                padding: 6px 10px;
-                border: 1px solid #ffcccc;
-                border-radius: 8px;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            }
+        .auth-message span,
+        .auth-message label {
+            font-size: 18px;
+            font-weight: 500;
+            color: #e74c3c;
+            background: #fff5f5;
+            padding: 6px 10px;
+            border: 1px solid #ffcccc;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
     </style>
 
 </head>
@@ -365,7 +365,7 @@
                         <asp:LinkButton ID="btnExportRC" runat="server" CssClass="count-box export-btn"
                             OnClick="btnExportRC_Click">
 
-                            <span class="default-text">DC:
+                            <span class="default-text">RC:
                                 <asp:Label ID="lblRCCount" runat="server" />
                             </span>
                             <span class="hover-text">EXPORT

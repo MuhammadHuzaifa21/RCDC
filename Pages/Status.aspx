@@ -1,7 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Status.aspx.cs" Inherits="Pages_Status" %>
 
 <%@ Register Src="../Components/Header.ascx" TagName="Header" TagPrefix="uc" %>
-<%@ Register Src="../Components/Footer.ascx" TagName="Footer" TagPrefix="uc" %>
 
 <!DOCTYPE html>
 <html>
@@ -15,18 +14,11 @@
     <style>
         /* Mobile Responsive */
         @media only screen and (max-width: 768px) {
-            .row {
-                flex-direction: column;
-                gap: 10px !important;
-            }
+            .row { flex-direction: column; gap: 10px !important; }
 
-            .btn-row {
-                flex-direction: column !important;
-            }
+            .btn-row { flex-direction: column !important; }
 
-            .btn-check-status, .btn-update {
-                width: 100% !important;
-            }
+            .btn-check-status, .btn-update { width: 100% !important; }
 
             .info-table th, .info-table td {
                 padding: 6px !important;
@@ -87,9 +79,9 @@
             transition: background 0.2s ease;
         }
 
-            .btn-check-status:hover {
-                background: #1a68d1;
-            }
+        .btn-check-status:hover {
+            background: #1a68d1;
+        }
 
         .btn-update {
             background-color: #ffc107;
@@ -104,15 +96,15 @@
             transition: background 0.2s ease;
         }
 
-            .btn-update:hover {
-                background-color: #e0a800;
-            }
+        .btn-update:hover {
+            background-color: #e0a800;
+        }
 
-            .btn-update:disabled {
-                background-color: #e9ecef;
-                color: #6c757d;
-                cursor: not-allowed;
-            }
+        .btn-update:disabled {
+            background-color: #e9ecef;
+            color: #6c757d;
+            cursor: not-allowed;
+        }
 
         .input-check-status {
             width: 100%;
@@ -123,10 +115,10 @@
             box-sizing: border-box;
         }
 
-            .input-check-status:focus {
-                border-color: #2c7be5;
-                box-shadow: 0 0 0 3px rgba(44,123,229,0.15);
-            }
+        .input-check-status:focus {
+            border-color: #2c7be5;
+            box-shadow: 0 0 0 3px rgba(44,123,229,0.15);
+        }
 
         /* Info Table - light background for headers */
         .info-table {
@@ -135,20 +127,20 @@
             margin-top: 15px;
         }
 
-            .info-table th {
-                background: #f8f9fa;
-                color: #333;
-                padding: 10px;
-                border: 1px solid #ddd;
-                font-weight: 600;
-                text-align: left;
-            }
+        .info-table th {
+            background: #f8f9fa;
+            color: #333;
+            padding: 10px;
+            border: 1px solid #ddd;
+            font-weight: 600;
+            text-align: left;
+        }
 
-            .info-table td {
-                padding: 10px;
-                border: 1px solid #ddd;
-                font-size: 14px;
-            }
+        .info-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+        }
 
         .result-panel {
             margin-top: 15px;

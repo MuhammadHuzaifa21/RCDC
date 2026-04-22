@@ -36,153 +36,6 @@ public partial class Pages_Status : System.Web.UI.Page
             Response.Redirect("~/Pages/Login.aspx");
     }
 
-    //    protected void btnCheckStatus_Click(object sender, EventArgs e)
-    //    {
-    //        string meterNo = txtCheckMeter.Text.Trim();
-
-    //        if (string.IsNullOrEmpty(meterNo))
-    //        {
-    //            ShowError("Please enter a Meter Number.");
-    //            btnUpdateDisconnection.Enabled = false;
-    //            pnlStatusResult.Visible = true;
-    //            return;
-    //        }
-
-    //        try
-    //        {
-    //            using (OracleConnection con = new OracleConnection(connStr))
-    //            {
-    //                string query = @"
-    //                    SELECT RESNAME, IS_DC, DC_BY, DC_DT, METERNO, PRCNT_NM, BLOCK_NM, BARCODE
-    //                    FROM DCRC
-    //                    WHERE METERNO = :meterNo
-    //                    AND ROWNUM = 1";
-
-    //                using (OracleCommand cmd = new OracleCommand(query, con))
-    //                {
-    //                    cmd.Parameters.Add(":meterNo", OracleDbType.Varchar2).Value = meterNo;
-    //                    con.Open();
-
-    //                    using (OracleDataReader dr = cmd.ExecuteReader())
-    //                    {
-    //                        if (dr.Read())
-    //                        {
-    //                            // STORE values in ViewState for later use
-    //                            CurrentMeterNo = meterNo;
-    //                            CurrentBarcode = dr["BARCODE"] != DBNull.Value ? dr["BARCODE"].ToString() : GenerateBarcode(meterNo);
-    //                            CurrentIsDc = Convert.ToInt32(dr["IS_DC"]);
-
-    //                            string resname = dr["RESNAME"].ToString();
-    //                            string dcBy = dr["DC_BY"] == DBNull.Value ? "N/A" : dr["DC_BY"].ToString();
-    //                            string dcDt = dr["DC_DT"] == DBNull.Value ? "N/A" : Convert.ToDateTime(dr["DC_DT"]).ToString("dd-MMM-yyyy HH:mm");
-    //                            string precinct = dr["PRCNT_NM"].ToString();
-    //                            string block = dr["BLOCK_NM"].ToString();
-
-    //                            // Check if IS_DC = 1 (disconnected) or = 0 (active)
-    //                            if (CurrentIsDc == 1)
-    //                            {
-    //                                // Show disconnected info with barcode
-    //                                string statusBadge = "<span class='status-badge status-disconnected'>DISCONNECTED</span>";
-
-    //                                string resultHtml = @"
-    //                                    <table class='info-table'>
-    //                                        <tr><th style='width:40%;'>Meter Number</th><td>" + meterNo + @"</td>
-    //                                        </tr>
-    //                                        <tr><th>Consumer Name</th><td>" + resname + @"</td>
-    //                                        </tr>
-    //                                        <tr><th>Precinct</th><td>" + precinct + @"</td>
-    //                                        </tr>
-    //                                        <tr><th>Block</th><td>" + block + @"</td>
-    //                                        </tr>
-    //                                        <tr><th>Barcode</th><td><strong>" + CurrentBarcode + @"</strong></td>
-    //                                        </tr>
-    //                                        <tr><th>Status</th><td>" + statusBadge + @"</td>
-    //                                        </tr>
-    //                                        <tr><th>Disconnected By</th><td>" + dcBy + @"</td>
-    //                                        </tr>
-    //                                        <tr><th>Disconnected On</th><td>" + dcDt + @"</td>
-    //                                        </tr>
-    //                                    </table>";
-
-    //                                lblStatusResult.Text = resultHtml;
-    //                                pnlStatusResult.Visible = true;
-
-    //                                // Enable update button for IS_DC = 1
-    //                                btnUpdateDisconnection.Enabled = true;
-    //                                btnUpdateDisconnection.Text = "Update Disconnection ";
-    //                            }
-    //                            else if (CurrentIsDc == 0)
-    //                            {
-    //                                // Store the meter but don't show full record
-    //                                string resultHtml = @"
-    //                                    <div class='warning-message'>
-    //                                        <strong>No Disconnection </strong><br/>
-    //                                    </div>";
-
-    //                                lblStatusResult.Text = resultHtml;
-    //                                pnlStatusResult.Visible = true;
-
-    //                                // Disable update button for IS_DC = 0
-    //                                btnUpdateDisconnection.Enabled = false;
-    //                                btnUpdateDisconnection.Text = "Update Disconnection ";
-    //                            }
-    //                            else if (CurrentIsDc == 2)
-    //                            {
-    //                                // Already updated to 2
-    //                                string statusBadge = "<span class='status-badge status-disconnected'>DISCONNECTED (Updated)</span>";
-
-    //                                string resultHtml = @"
-    //                                    <div class='warning-message'>
-    //                                        <strong>Already Updated</strong><br/>
-    //                                        This meter has already been marked as DISCONNECTED.
-    //                                    </div>
-    //                                    <table class='info-table'>
-    //                                       <tr><th style='width:40%;'>Meter Number</th><td>" + meterNo + @"</td>
-    //                                        </tr>
-    //                                        <tr><th>Consumer Name</th><td>" + resname + @"</td>
-    //                                        </tr>
-    //                                        <tr><th>Precinct</th><td>" + precinct + @"</td>
-    //                                        </tr>
-    //                                        <tr><th>Block</th><td>" + block + @"</td>
-    //                                        </tr>
-    //                                        <tr><th>Barcode</th><td><strong>" + CurrentBarcode + @"</strong></td>
-    //                                        </tr>
-    //                                        <tr><th>Status</th><td>" + statusBadge + @"</td>
-    //                                        </tr>
-    //                                        <tr><th>Disconnected By</th><td>" + dcBy + @"</td>
-    //                                        </tr>
-    //                                        <tr><th>Disconnected On</th><td>" + dcDt + @"</td>
-    //                                        </tr>
-    //                                    </table>";
-
-    //                                lblStatusResult.Text = resultHtml;
-    //                                pnlStatusResult.Visible = true;
-
-    //                                // Disable update button for IS_DC = 2
-    //                                btnUpdateDisconnection.Enabled = false;
-    //                                btnUpdateDisconnection.Text = "Update Disconnection (Already Updated)";
-    //                            }
-    //                        }
-    //                        else
-    //                        {
-    //                            ShowError(string.Format("Meter Number '{0}' not found in DCRC table.", meterNo));
-    //                            btnUpdateDisconnection.Enabled = false;
-    //                            // Clear stored values when meter not found
-    //                            CurrentMeterNo = "";
-    //                            CurrentBarcode = "";
-    //                            CurrentIsDc = 0;
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //        }
-    //        catch (Exception ex)
-    //        {
-    //            ShowError("Database error: " + ex.Message);
-    //            btnUpdateDisconnection.Enabled = false;
-    //        }
-    //    }
-
     protected void btnCheckStatus_Click(object sender, EventArgs e)
     {
         string meterNo = txtCheckMeter.Text.Trim();
@@ -200,10 +53,10 @@ public partial class Pages_Status : System.Web.UI.Page
             using (OracleConnection con = new OracleConnection(connStr))
             {
                 string query = @"
-                    SELECT RESNAME, IS_DC, DC_BY, DC_DT, METERNO, PRCNT_NM, BLOCK_NM, BARCODE
-                    FROM DCRC
-                    WHERE METERNO = :meterNo
-                    AND ROWNUM = 1";
+                        SELECT RESNAME, IS_DC, DC_BY, DC_DT, METERNO, BARCODE
+                        FROM DCRC
+                        WHERE METERNO = :meterNo
+                        AND ROWNUM = 1";
 
                 using (OracleCommand cmd = new OracleCommand(query, con))
                 {
@@ -215,15 +68,14 @@ public partial class Pages_Status : System.Web.UI.Page
                         if (dr.Read())
                         {
                             // STORE values in ViewState for later use
-                            CurrentMeterNo = meterNo;
+                            //CurrentMeterNo = meterNo;
                             CurrentBarcode = dr["BARCODE"] != DBNull.Value ? dr["BARCODE"].ToString() : GenerateBarcode(meterNo);
                             CurrentIsDc = Convert.ToInt32(dr["IS_DC"]);
 
                             string resname = dr["RESNAME"].ToString();
                             string dcBy = dr["DC_BY"] == DBNull.Value ? "N/A" : dr["DC_BY"].ToString();
                             string dcDt = dr["DC_DT"] == DBNull.Value ? "N/A" : Convert.ToDateTime(dr["DC_DT"]).ToString("dd-MMM-yyyy");
-                            string precinct = dr["PRCNT_NM"].ToString();
-                            string block = dr["BLOCK_NM"].ToString();
+                            
 
                             // Check if IS_DC = 1 (disconnected) or = 0 (active)
                             if (CurrentIsDc == 1)
@@ -232,19 +84,18 @@ public partial class Pages_Status : System.Web.UI.Page
                                 string statusBadge = "<span class='status-badge status-disconnected'>DISCONNECTED</span>";
 
                                 string resultHtml = @"
-                                    <table class='info-table'>
-                                        
-                                        <tr><th>Consumer Name</th><td>" + resname + @"</td>
-                                        </tr>
-                                        <tr><th>Barcode</th><td><strong>" + CurrentBarcode + @"</strong></td>
-                                        </tr>
-                                        <tr><th>Status</th><td>" + statusBadge + @"</td>
-                                        </tr>
-                                        <tr><th>Disconnected By</th><td>" + dcBy + @"</td>
-                                        </tr>
-                                        <tr><th>Disconnected On</th><td>" + dcDt + @"</td>
-                                        </tr>
-                                    </table>";
+                                        <table class='info-table'>
+                                            <tr><th>Consumer Name</th><td>" + resname + @"</td>
+                                            </tr>                                            
+                                            <tr><th>Barcode</th><td><strong>" + CurrentBarcode + @"</strong></td>
+                                            </tr>
+                                            <tr><th>Status</th><td>" + statusBadge + @"</td>
+                                            </tr>
+                                            <tr><th>Disconnected By</th><td>" + dcBy + @"</td>
+                                            </tr>
+                                            <tr><th>Disconnected On</th><td>" + dcDt + @"</td>
+                                            </tr>
+                                        </table>";
 
                                 lblStatusResult.Text = resultHtml;
                                 pnlStatusResult.Visible = true;
@@ -257,51 +108,51 @@ public partial class Pages_Status : System.Web.UI.Page
                             {
                                 // Store the meter but don't show full record
                                 string resultHtml = @"
-                                    <div class='warning-message'>
-                                        <strong>No Disconnection. </strong><br/>
-                                    </div>";
+                                        <div class='warning-message'>
+                                            <strong>No Disconnection </strong><br/>
+                                        </div>";
 
                                 lblStatusResult.Text = resultHtml;
                                 pnlStatusResult.Visible = true;
 
                                 // Disable update button for IS_DC = 0
                                 btnUpdateDisconnection.Enabled = false;
-                                btnUpdateDisconnection.Text = "Update Disconnection";
+                                btnUpdateDisconnection.Text = "Update Disconnection ";
                             }
                             else if (CurrentIsDc == 2)
                             {
                                 // Already updated to 2
-                                string statusBadge = "<span class='status-badge status-disconnected'>DISCONNECTED (Updated)</span>";
+                                string statusBadge = "<span class='status-badge status-disconnected'>DISCONNECTED (ILLEGAL)</span>";
 
                                 string resultHtml = @"
-                                    <div class='warning-message'>
-                                        <strong>Already Updated</strong><br/>
-                                        This meter has already been marked as DISCONNECTED.
-                                    </div>
-                                    <table class='info-table'>
-                                        <tr><th>Consumer Name</th><td>" + resname + @"</td>
-                                        </tr>
-                                        <tr><th>Barcode</th><td><strong>" + CurrentBarcode + @"</strong></td>
-                                        </tr>
-                                        <tr><th>Status</th><td>" + statusBadge + @"</td>
-                                        </tr>
-                                        <tr><th>Disconnected By</th><td>" + dcBy + @"</td>
-                                        </tr>
-                                        <tr><th>Disconnected On</th><td>" + dcDt + @"</td>
-                                        </tr>
-                                    </table>";
+                                        <div class='warning-message'>
+                                            <strong>Already Updated</strong><br/>
+                                            This meter has already been marked as ILLEGAL.
+                                        </div>
+                                        <table class='info-table'>
+                                            <tr><th>Consumer Name</th><td>" + resname + @"</td>
+                                            </tr>
+                                            <tr><th>Barcode</th><td><strong>" + CurrentBarcode + @"</strong></td>
+                                            </tr>
+                                            <tr><th>Status</th><td>" + statusBadge + @"</td>
+                                            </tr>
+                                            <tr><th>Disconnected By</th><td>" + dcBy + @"</td>
+                                            </tr>
+                                            <tr><th>Disconnected On</th><td>" + dcDt + @"</td>
+                                            </tr>
+                                        </table>";
 
                                 lblStatusResult.Text = resultHtml;
                                 pnlStatusResult.Visible = true;
 
                                 // Disable update button for IS_DC = 2
                                 btnUpdateDisconnection.Enabled = false;
-                                btnUpdateDisconnection.Text = "Update Disconnection (Already Updated)";
+                                btnUpdateDisconnection.Text = "Update Disconnection (ILLEGAL MARKED)";
                             }
                         }
                         else
                         {
-                            ShowError(string.Format("Meter Number '{0}' not found in DCRC table.", meterNo));
+                            ShowError(string.Format("Meter Number '{0}' not found.", meterNo));
                             btnUpdateDisconnection.Enabled = false;
                             // Clear stored values when meter not found
                             CurrentMeterNo = "";
@@ -374,18 +225,18 @@ public partial class Pages_Status : System.Web.UI.Page
                     if (rowsAffected > 0)
                     {
                         // Just show success - DON'T call btnCheckStatus_Click again
-                        ShowSuccess(string.Format("✓ Meter {0} successfully updated to DISCONNECTED", meterNo));
+                        ShowSuccess(string.Format("✓ Meter {0} successfully updated to ILLEGAL.", meterNo));
                         btnUpdateDisconnection.Enabled = false;
-                        btnUpdateDisconnection.Text = "Update Disconnection (Already Updated)";
+                        btnUpdateDisconnection.Text = "Update Disconnection (ILLEGAL MARKED)";
 
                         // Update the displayed info manually instead of calling btnCheckStatus_Click
                         lblStatusResult.Text = string.Format(@"
                         <div class='success-message'>
                             <strong>Successfully Updated!</strong><br/>
-                            Meter {0} has been marked as DISCONNECTED
+                            Meter {0} has been marked as ILLEGAL.
                         </div>
                         <table class='info-table'>
-                            <tr><th>Status</th><td><span class='status-badge status-disconnected'>DISCONNECTED (Updated)</span></td></tr>
+                            <tr><th>Status</th><td><span class='status-badge status-disconnected'>DISCONNECTED (ILLEGAL)</span></td></tr>
                             <tr><th>Disconnected By</th><td>{1}</td></tr>
                             <tr><th>Disconnected On</th><td>{2}</td></tr>
                         </table>",
