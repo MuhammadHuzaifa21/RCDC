@@ -11,7 +11,7 @@ using Oracle.ManagedDataAccess.Client;
 
 public partial class Pages_Record : System.Web.UI.Page
 {
-    string connStr = WebConfigurationManager
+    string connStrMNT = WebConfigurationManager
                         .ConnectionStrings["MyDbConnectionMNT"]
                         .ConnectionString;
 
@@ -66,7 +66,7 @@ public partial class Pages_Record : System.Web.UI.Page
         }
 
         // ✅ Allowed users list
-        int[] allowedUsers = { 25128, 1};
+        int[] allowedUsers = { 1, 17101 };
 
         if (!allowedUsers.Contains(userId))
         {
@@ -101,14 +101,21 @@ public partial class Pages_Record : System.Web.UI.Page
             string barcodeFilter = txtSearchBarcode.Text.Trim();
             string precinctFilter = txtSearchPrecinct.Text.Trim();
 
-            using (OracleConnection con = new OracleConnection(connStr))
+            /* For Date Filter */
+            string dcFrom = txtDCFrom.Text.Trim();
+            string dcTo = txtDCTo.Text.Trim();
+
+            //string rcFrom = txtRCFrom.Text.Trim();
+            //string rcTo = txtRCTo.Text.Trim();
+
+            using (OracleConnection con = new OracleConnection(connStrMNT))
             {
                 con.Open();
 
                 // COUNT: DC / RC
                 OracleCommand countStats = new OracleCommand(@"
                         SELECT 
-                            SUM(CASE WHEN IS_DC = 1 THEN 1 ELSE 0 END) AS DC_COUNT,
+                            SUM(CASE WHEN IS_DC = 1 OR IS_DC = 2 OR IS_DC = 3 THEN 1 ELSE 0 END) AS DC_COUNT,
                             SUM(CASE WHEN IS_RC = 1 THEN 1 ELSE 0 END) AS RC_COUNT
                         FROM DCRC", con);
 
@@ -121,6 +128,10 @@ public partial class Pages_Record : System.Web.UI.Page
                     }
                 }
 
+
+                //AND (:rcFrom IS NULL OR RC_DT >= TO_DATE(:rcFrom, 'YYYY-MM-DD'))
+                //AND (:rcTo IS NULL OR RC_DT <= TO_DATE(:rcTo, 'YYYY-MM-DD'))
+
                 // 1️⃣ Get total count
                 using (OracleCommand countCmd = new OracleCommand(@"
                     SELECT 
@@ -129,21 +140,37 @@ public partial class Pages_Record : System.Web.UI.Page
                         AND NVL(IS_RC , 0) = 0
                         AND TBIL_AMT_DIF != 0
                         AND (:barcode IS NULL OR BARCODE LIKE '%' || :barcode || '%')
-                        AND (:precinct IS NULL OR PRCNT_NM LIKE '%' || :precinct || '%')", con))
+                        AND (:precinct IS NULL OR PRCNT_NM LIKE '%' || :precinct || '%')
+                        AND (:dcFrom IS NULL OR DC_DT >= TO_DATE(:dcFrom, 'YYYY-MM-DD'))
+                        AND (:dcTo IS NULL OR DC_DT <= TO_DATE(:dcTo, 'YYYY-MM-DD'))", con))
                 {
                     countCmd.BindByName = true;
 
                     countCmd.Parameters.Add("barcode", string.IsNullOrEmpty(barcodeFilter) ? (object)DBNull.Value : barcodeFilter);
                     countCmd.Parameters.Add("precinct", string.IsNullOrEmpty(precinctFilter) ? (object)DBNull.Value : precinctFilter);
+                    countCmd.Parameters.Add("dcFrom", string.IsNullOrEmpty(dcFrom) ? (object)DBNull.Value : dcFrom);
+                    countCmd.Parameters.Add("dcTo", string.IsNullOrEmpty(dcTo) ? (object)DBNull.Value : dcTo);
+
+                    //countCmd.Parameters.Add("rcFrom", string.IsNullOrEmpty(rcFrom) ? (object)DBNull.Value : rcFrom);
+                    //countCmd.Parameters.Add("rcTo", string.IsNullOrEmpty(rcTo) ? (object)DBNull.Value : rcTo);
 
                     totalRows = Convert.ToInt32(countCmd.ExecuteScalar());
 
-                    lblTotalRecords.Text = totalRows.ToString();
+                    //lblTotalRecords.Text = totalRows.ToString();
                 }
                 
+                //AND (:rcFrom IS NULL OR RC_DT >= TO_DATE(:rcFrom, 'YYYY-MM-DD'))
+                //AND (:rcTo IS NULL OR RC_DT <= TO_DATE(:rcTo, 'YYYY-MM-DD'))
 
                 using (OracleCommand cmd = new OracleCommand(@" 
-                    SELECT * FROM (
+                    SELECT 
+                        RN,
+                        BARCODE, RESNAME, ADDRESS, PRCNT_NM, BLOCK_NM, TBIL_AMT, TBIL_AMT_REC, TBIL_AMT_DIF,
+                        MBIL_AMT, EBIL_AMT, WBIL_AMT, GBIL_AMT, RBIL_AMT, BBIL_AMT,
+                        MBIL_AMT_REC, EBIL_AMT_REC, WBIL_AMT_REC, GBIL_AMT_REC,
+                        RBIL_AMT_REC, BBIL_AMT_REC,
+                        IS_DC, IS_RC, RC_TMP
+                    FROM (
                         SELECT 
                             BARCODE, RESNAME, ADDRESS, PRCNT_NM, BLOCK_NM, TBIL_AMT, TBIL_AMT_REC, TBIL_AMT_DIF,
                             MBIL_AMT, EBIL_AMT, WBIL_AMT, GBIL_AMT, RBIL_AMT, BBIL_AMT,
@@ -159,6 +186,8 @@ public partial class Pages_Record : System.Web.UI.Page
                             AND TBIL_AMT_DIF != 0
                             AND (:barcode IS NULL OR BARCODE LIKE '%' || :barcode || '%')
                             AND (:precinct IS NULL OR PRCNT_NM LIKE '%' || :precinct || '%')
+                            AND (:dcFrom IS NULL OR DC_DT >= TO_DATE(:dcFrom, 'YYYY-MM-DD'))
+                            AND (:dcTo IS NULL OR DC_DT <= TO_DATE(:dcTo, 'YYYY-MM-DD'))
                     )
                     WHERE RN BETWEEN :StartRow AND :EndRow
                     ORDER BY RN", con))
@@ -167,6 +196,11 @@ public partial class Pages_Record : System.Web.UI.Page
 
                     cmd.Parameters.Add("barcode", string.IsNullOrEmpty(barcodeFilter) ? (object)DBNull.Value : barcodeFilter);
                     cmd.Parameters.Add("precinct", string.IsNullOrEmpty(precinctFilter) ? (object)DBNull.Value : precinctFilter);
+                    cmd.Parameters.Add("dcFrom", string.IsNullOrEmpty(dcFrom) ? (object)DBNull.Value : dcFrom);
+                    cmd.Parameters.Add("dcTo", string.IsNullOrEmpty(dcTo) ? (object)DBNull.Value : dcTo);
+
+                    //cmd.Parameters.Add("rcFrom", string.IsNullOrEmpty(rcFrom) ? (object)DBNull.Value : rcFrom);
+                    //cmd.Parameters.Add("rcTo", string.IsNullOrEmpty(rcTo) ? (object)DBNull.Value : rcTo);
                     cmd.Parameters.Add("StartRow", startRow);
                     cmd.Parameters.Add("EndRow", endRow);
                     
@@ -211,7 +245,7 @@ public partial class Pages_Record : System.Web.UI.Page
             /* ROW 1 - CLIENT DETAILS (The Main Frozen Header) */
             TableHeaderCell clientHeader = new TableHeaderCell();
             clientHeader.Text = "CLIENT DETAILS";
-            clientHeader.ColumnSpan = 8;
+            clientHeader.ColumnSpan = 9;
             clientHeader.HorizontalAlign = HorizontalAlign.Center;
             row1.Cells.Add(clientHeader);
 
@@ -259,19 +293,27 @@ public partial class Pages_Record : System.Web.UI.Page
                 e.Row.CssClass = "updated-row"; 
             }
 
+            if (isDisconnected == 3)
+            {
+                e.Row.CssClass = "adc-row";
+            }
+
             if (reconnectTemp == 1)
             {
                 e.Row.CssClass = "approved-reconnect-row";
             }
 
         }
-    }
-    
+    }    
 
     protected void btnClear_Click(object sender, EventArgs e)
     {
         txtSearchBarcode.Text = "";
         txtSearchPrecinct.Text = "";
+        txtDCFrom.Text = "";
+        txtDCTo.Text = "";
+        //txtRCFrom.Text = "";
+        //txtRCTo.Text = "";
 
         gvRecords.PageIndex = 0;
         LoadGrid(1);
@@ -279,13 +321,13 @@ public partial class Pages_Record : System.Web.UI.Page
 
     protected void btnExportDC_Click(object sender, EventArgs e)
     {
-        using (OracleConnection con = new OracleConnection(connStr))
+        using (OracleConnection con = new OracleConnection(connStrMNT))
         {
             con.Open();
 
             string sql = @"
             SELECT * FROM DCRC
-            WHERE IS_DC = 1";
+            WHERE IS_DC = 1 OR IS_DC = 2 OR IS_DC = 3";
 
             ExportCsv(sql, "DC.csv", con);
         }
@@ -293,7 +335,7 @@ public partial class Pages_Record : System.Web.UI.Page
 
     protected void btnExportRC_Click(object sender, EventArgs e)
     {
-        using (OracleConnection con = new OracleConnection(connStr))
+        using (OracleConnection con = new OracleConnection(connStrMNT))
         {
             con.Open();
 
