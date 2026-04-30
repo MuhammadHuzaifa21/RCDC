@@ -175,7 +175,7 @@ public partial class Pages_RC : System.Web.UI.Page
 
             string query = @"
                             SELECT 
-                                BARCODE,RESNAME,ADDRESS,
+                                BILLING_MONTH, RES_ID, BARCODE,RESNAME,ADDRESS,
                                 MBIL_AMT,EBIL_AMT,WBIL_AMT,GBIL_AMT,RBIL_AMT,BBIL_AMT,
                                 MBIL_AMT_REC,EBIL_AMT_REC,WBIL_AMT_REC,GBIL_AMT_REC,RBIL_AMT_REC,BBIL_AMT_REC,
                                 TBIL_AMT,TBIL_AMT_REC,TBIL_AMT_DIF, METERNO
@@ -261,6 +261,7 @@ public partial class Pages_RC : System.Web.UI.Page
             {
                 string barcode = lblBarcode.Text;
                 string user = Session["User"].ToString();
+                DateTime now = DateTime.Now;                
 
                 string query = @"
                         UPDATE DCRC
@@ -283,12 +284,37 @@ public partial class Pages_RC : System.Web.UI.Page
                     cmd.ExecuteNonQuery();
                 }
 
+                /* ================= INSERT RC LOG ================= */
+                string insertQuery = @"
+                    INSERT INTO DCRC_RC
+                    (BILLING_MONTH, BARCODE, RES_ID, RESNAME, ADDRESS, IS_RC, RC_DT, RC_BY)
+                    SELECT 
+                        BILLING_MONTH, BARCODE, RES_ID, RESNAME, ADDRESS,
+                        :is_rc, :rcdt, :rcby
+                    FROM DCRC
+                    WHERE BARCODE = :barcode";
+
+                using (OracleCommand cmdInsert = new OracleCommand(insertQuery, con))
+                {
+                    cmdInsert.Transaction = trans;
+                    cmdInsert.BindByName = true;
+
+                    
+                    cmdInsert.Parameters.Add(":isrc", OracleDbType.Int32).Value = 1;
+                    cmdInsert.Parameters.Add(":rcdt", OracleDbType.Date).Value = now;
+                    cmdInsert.Parameters.Add(":rcby", OracleDbType.Varchar2).Value = user;
+                    cmdInsert.Parameters.Add(":barcode", OracleDbType.Varchar2).Value = barcode;
+
+                    cmdInsert.ExecuteNonQuery();
+                }
+
                 trans.Commit();
 
-                /* --- NEW CHANGES --- */
+                /* ================= SESSION HANDLING ================= */
                 /* REMOVE CURRENT RECORD FROM SESSION */
 
                 DataTable dt = Session["RC_records"] as DataTable;
+
                 if (dt == null || dt.Rows.Count == 0)
                 {
                     pnlRecords.Visible = false;

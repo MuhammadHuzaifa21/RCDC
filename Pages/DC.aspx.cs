@@ -161,6 +161,7 @@ public partial class Pages_DC : System.Web.UI.Page
     protected void SearchChanged(object sender, EventArgs e)
     {
         string barcode = txtSearchBarcode.Text;
+        string meterNo = txtMtrNo.Text;
     }
 
     /* BUTTONS */
@@ -171,6 +172,7 @@ public partial class Pages_DC : System.Web.UI.Page
         string precinct = ddlPrecinct.SelectedValue;
         string block = ddlBlock.SelectedValue;
         string barcode = txtSearchBarcode.Text;
+        string meterNo = txtMtrNo.Text;
 
         DataTable dt = new DataTable();
 
@@ -224,7 +226,7 @@ public partial class Pages_DC : System.Web.UI.Page
             /* SEARCH BY DROP DOWNS */
             string query = @"
                     SELECT 
-                        BARCODE,RESNAME,ADDRESS, PRCNT_NM, BLOCK_NM,
+                        BILLING_MONTH, BARCODE, RES_ID, RESNAME,ADDRESS, PRCNT_NM, BLOCK_NM,
                         MBIL_AMT,EBIL_AMT,WBIL_AMT,GBIL_AMT,RBIL_AMT,BBIL_AMT,
                         MBIL_AMT_REC,EBIL_AMT_REC,WBIL_AMT_REC,GBIL_AMT_REC,RBIL_AMT_REC,BBIL_AMT_REC,
                         TBIL_AMT,TBIL_AMT_REC,TBIL_AMT_DIF, METERNO                        
@@ -304,6 +306,18 @@ public partial class Pages_DC : System.Web.UI.Page
             {
                 string barcode = lblBarcode.Text;
                 string user = Session["User"].ToString();
+                DateTime now = DateTime.Now;
+
+                // 👉 Get current row from session (for RES_ID, NAME, etc.)
+                DataTable dtSession = (DataTable)Session["DC_records"];
+                int index = (int)Session["DC_index"];
+                DataRow row = dtSession.Rows[index];
+
+                string resId = row["RES_ID"].ToString();   // make sure exists
+                string resName = row["RESNAME"].ToString();
+                string address = row["ADDRESS"].ToString();
+
+                string billingMonth = row["BILLING_MONTH"].ToString();                
 
                 string query = @"
                         UPDATE DCRC
@@ -324,7 +338,31 @@ public partial class Pages_DC : System.Web.UI.Page
                     cmd.Parameters.Add(":barcode", OracleDbType.Varchar2).Value = barcode;
 
                     cmd.ExecuteNonQuery();
-                }                                
+                }
+
+                /* ================= INSERT LOG ================= */
+                string insertQuery = @"
+                INSERT INTO DCRC_DC
+                (BILLING_MONTH, BARCODE, RES_ID, RESNAME, ADDRESS, IS_DC, DC_DT, DC_BY)
+                VALUES
+                (:billMonth, :barcode, :resId, :resName, :address, :isdc, :dcdt, :dcby)";
+
+                using (OracleCommand cmdInsert = new OracleCommand(insertQuery, con))
+                {
+                    cmdInsert.Transaction = trans;
+                    cmdInsert.BindByName = true;
+
+                    cmdInsert.Parameters.Add(":billMonth", OracleDbType.Varchar2).Value = billingMonth;
+                    cmdInsert.Parameters.Add(":barcode", OracleDbType.Varchar2).Value = barcode;
+                    cmdInsert.Parameters.Add(":resId", OracleDbType.Varchar2).Value = resId;
+                    cmdInsert.Parameters.Add(":resName", OracleDbType.Varchar2).Value = resName;
+                    cmdInsert.Parameters.Add(":address", OracleDbType.Varchar2).Value = address;
+                    cmdInsert.Parameters.Add(":isdc", OracleDbType.Int32).Value = 1;
+                    cmdInsert.Parameters.Add(":dcdt", OracleDbType.Date).Value = now;
+                    cmdInsert.Parameters.Add(":dcby", OracleDbType.Int32).Value = user;
+
+                    cmdInsert.ExecuteNonQuery();
+                }
 
                 // ✅ COMMIT
                 trans.Commit();
@@ -333,9 +371,7 @@ public partial class Pages_DC : System.Web.UI.Page
 
                 /* REMOVE CURRENT RECORD FROM SESSION */
                 DataTable dt = (DataTable)Session["DC_records"];
-                int index = (int)Session["DC_index"];
-
-                dt.Rows.RemoveAt(index);
+                dt.Rows.RemoveAt(index); // remove current record
 
                 /* HANDLE END OF LIST */
                 if (dt.Rows.Count == 0)
@@ -368,21 +404,6 @@ public partial class Pages_DC : System.Web.UI.Page
 
         }
     }
-
-    //private void UpdateChildTable(OracleConnection con, OracleTransaction trans, string tableName, string barcode)
-    //{
-    //    string query = "UPDATE " + tableName + " SET IS_DC = 1 WHERE REG_NO = :barcode";
-
-    //    using (OracleCommand cmd = new OracleCommand(query, con))
-    //    {
-    //        cmd.Transaction = trans;
-    //        cmd.BindByName = true;
-
-    //        cmd.Parameters.Add("barcode", barcode);
-
-    //        cmd.ExecuteNonQuery();
-    //    }
-    //}
 
     /* PAGINATION */
     // Next 

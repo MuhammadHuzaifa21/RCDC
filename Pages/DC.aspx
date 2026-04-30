@@ -255,7 +255,10 @@
                 <asp:DropDownList ID="ddlBlock" runat="server" CssClass="input" />
 
                 <asp:Label ID="lblSearchBarcode" runat="server" Text="Barcode" CssClass="label" />
-                <asp:TextBox ID="txtSearchBarcode" runat="server" CssClass="search-box" placeholder="Search Barcode..." AutoPostBack="true" />
+                <asp:TextBox ID="txtSearchBarcode" runat="server" CssClass="search-box" placeholder="Search Barcode..." AutoPostBack="true" ons />
+
+                <asp:Label ID="lblMtrNo" runat="server" Text="Meter No" CssClass="label" />
+                <asp:TextBox ID="txtMtrNo" runat="server" CssClass="search-box" placeholder="Search Meter No..." AutoPostBack="true" />
 
                 <asp:Label ID="lblMessage" runat="server" ForeColor="Red" Visible="false"></asp:Label>
 
