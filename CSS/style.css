@@ -61,10 +61,7 @@
 
 /* DROP DOWN */
 /* Dropdown container */
-.dropdown {
-    /*display: inline-block;*/
-    position: relative;
-}
+.dropdown { position: relative; }
 
 /* Button */
 .dropbtn {
@@ -91,6 +88,8 @@
     transition: opacity 0.2s ease;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
+
+.hide-on-web { display: none !important; }
 
 .dropdown-content[style*="block"] { opacity: 1; }
 

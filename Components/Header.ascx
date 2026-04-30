@@ -1,19 +1,21 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Header.ascx.cs" Inherits="Components_Header" %>
 
 <style>
-@media screen and (max-width: 768px) {
-    .header {
-        flex-direction: column !important;
-        padding: 10px !important;
-    }
+    .hide-on-web { display: none !important; }
+
+    @media screen and (max-width: 768px) {
+        .header {
+            flex-direction: column !important;
+            padding: 10px !important;
+        }
     
-    .menu {
-        flex-wrap: wrap !important;
-        justify-content: center !important;
-        gap: 10px !important;
-        margin-top: 10px !important;
+        .menu {
+            flex-wrap: wrap !important;
+            justify-content: center !important;
+            gap: 10px !important;
+            margin-top: 10px !important;
+        }
     }
-}
 </style>
 
 <div class="header">
@@ -33,7 +35,7 @@
         <asp:HyperLink ID="lnkLogin" runat="server" NavigateUrl="../Pages/Login.aspx" Visible="false">Login</asp:HyperLink>        
 
         <!-- 🔽 DC / RC GROUP -->
-        <div ID="divConnection" runat="server" class="dropdown">
+        <div ID="divConnection" runat="server" class="dropdown hide-on-web">
             <button type="button" class="dropbtn" onclick="toggleDropdown(this)">Connection ▼</button>
             <div class="dropdown-content">
                 <asp:HyperLink ID="lnkDC" runat="server" NavigateUrl="../Pages/DC.aspx">DC</asp:HyperLink>
@@ -41,7 +43,7 @@
             </div>
         </div>
         
-        <asp:HyperLink ID="lnkStatus" runat="server" NavigateUrl="../Pages/Status.aspx">Check Status</asp:HyperLink>
+        <asp:HyperLink ID="lnkStatus" runat="server" class="hide-on-web" NavigateUrl="../Pages/Status.aspx">Check Status</asp:HyperLink>
         <asp:HyperLink ID="lnkRecords" runat="server" NavigateUrl="../Pages/Record.aspx" class="hide-on-mobile">Records</asp:HyperLink>
                 
         <asp:LinkButton ID="btnLogout" runat="server" OnClick="btnLogout_Click">Logout</asp:LinkButton>     

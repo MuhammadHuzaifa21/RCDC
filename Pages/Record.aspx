@@ -231,13 +231,13 @@
         .grid-style th { background-color: #2f4050; color: white; text-align: center; padding: 6px; border: 1px solid #d0d0d0; white-space: nowrap; position: sticky; top: 0; z-index: 2; }
         .grid-style td { padding: 8px; border: 1px solid #d0d0d0; white-space: nowrap; } 
         .grid-style tr:hover { background: #eef5ff; }
-        .grid-style td:nth-child(8) { background-color: #fff7cc; /* light yellow */ }         
+        .grid-style td:nth-child(9) { background-color: #fff7cc; /* light yellow */ }         
 
         .grid-pager { text-align: center; padding: 10px; background: #f3f4f6; position: sticky; bottom: 0; }
         .grid-pager a,
         .grid-pager span { margin: 0 5px; padding: 6px 10px; border-radius: 5px; text-decoration: none; border: 1px solid #ccc; color: #333; }
         .grid-pager span { background: #2f4050; color: white; font-weight: bold; }
-        .grid-pager td:nth-child(8) { background: #f3f4f6; color: white; font-weight: 600; }
+        .grid-pager td:nth-child(9) { background: #f3f4f6; color: white; font-weight: 600; }
         .grid-pager tr:hover { background: #f3f4f6; }
 
         .disconnected-row { background-color: #ffe6e6 !important; }         /* Red - for IS_DC = 1 */        

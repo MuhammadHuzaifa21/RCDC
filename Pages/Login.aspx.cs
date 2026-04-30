@@ -81,7 +81,7 @@ public partial class Pages_Login : System.Web.UI.Page
                         Session["UserName"] = dr["USER_NAME"].ToString();
                         Session["Role"] = dr["ROLE_ID"].ToString();
 
-                        Response.Redirect("~/Pages/DC.aspx");
+                        Response.Redirect("~/Pages/Record.aspx");
                         return true;
                     }
                 }
