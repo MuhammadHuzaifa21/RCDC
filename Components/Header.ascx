@@ -27,7 +27,7 @@
     <div class="menu" ID="menuID">
         <asp:Label ID="lblMessage" runat="server" Text="Label" CssClass="label" Style="display:none; font-size: 12px;"></asp:Label>
 
-        <asp:LinkButton ID="btnUpdate" runat="server" OnClick="btnUpdate_Click" class="hide-on-mobile">Update</asp:LinkButton>
+        <asp:LinkButton ID="btnUpdate" runat="server" OnClick="btnUpdate_Click" class="hide-on-mobile" Visible="false">Update</asp:LinkButton>
         <asp:HiddenField ID="hdnPassword" runat="server" />
 
         <asp:HyperLink ID="lnkLogin" runat="server" NavigateUrl="../Pages/Login.aspx" Visible="false">Login</asp:HyperLink>        
