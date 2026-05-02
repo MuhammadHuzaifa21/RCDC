@@ -80,34 +80,12 @@
         }
 
         /* INPUT */
-        .input {
-            padding: 8px 12px;
-            border: 1px solid #dcdcdc;
-            border-radius: 6px;
-            min-width: 180px;
-            font-size: 13px;
-        }
-
-        .input:focus {
-            border-color: #2c7be5;
-            box-shadow: 0 0 0 2px rgba(44,123,229,0.15);
-        }
+        .input { padding: 8px 12px; border: 1px solid #dcdcdc; border-radius: 6px; min-width: 180px; font-size: 13px; }
+        .input:focus { border-color: #2c7be5; box-shadow: 0 0 0 2px rgba(44,123,229,0.15); }
 
         /* DATE GROUP */
-        .date-group {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: #f7f9fb;
-            padding: 6px 10px;
-            border-radius: 6px;
-        }
-
-        .date-group label {
-            font-size: 12px;
-            font-weight: 600;
-            color: #666;
-        }
+        .date-group { display: flex; align-items: center; gap: 6px; background: #f7f9fb; padding: 6px 10px; border-radius: 6px; }
+        .date-group label { font-size: 12px; font-weight: 600; color: #666; }
 
         /* ── LEFT: SEARCH ──────────────────────────────────────── */
         .search-section { display: flex; gap: 10px; align-items: center; }
@@ -231,7 +209,34 @@
         .grid-style th { background-color: #2f4050; color: white; text-align: center; padding: 6px; border: 1px solid #d0d0d0; white-space: nowrap; position: sticky; top: 0; z-index: 2; }
         .grid-style td { padding: 8px; border: 1px solid #d0d0d0; white-space: nowrap; } 
         .grid-style tr:hover { background: #eef5ff; }
-        .grid-style td:nth-child(9) { background-color: #fff7cc; /* light yellow */ }         
+        .grid-style td:nth-child(9) { background-color: #fff7cc; /* light yellow - DIFF */ }    
+        .grid-style td:nth-child(10) { background-color: white; /* white - DC DATE */ }     
+        
+        /* 1st column 
+        .grid-style th:nth-child(1),
+        .grid-style td:nth-child(1) {
+            position: sticky;
+            left: 0;
+            z-index: 3;
+        }
+
+        /* 2nd column 
+        .grid-style th:nth-child(2),
+        .grid-style td:nth-child(2) {
+            position: sticky;
+            left: 53px; 
+            z-index: 3;
+        }
+
+        /* 3rd column 
+        .grid-style th:nth-child(3),
+        .grid-style td:nth-child(3) {
+            position: sticky;
+            left: 160px;
+            z-index: 3;
+            background: white;
+        }
+            */
 
         .grid-pager { text-align: center; padding: 10px; background: #f3f4f6; position: sticky; bottom: 0; }
         .grid-pager a,
@@ -272,12 +277,12 @@
 
                 <div class="top-bar">
 
-                    <!-- ROW 1: TITLE + COUNTS -->
+                    <!-- ROW 1: TITLE -->
                     <div class="top-header">                        
                         <h2>Service Disconnection & Recovery Report</h2>                        
                     </div>                    
 
-                    <!-- ROW 2: DATE FILTERS -->
+                    <!-- ROW 2: FILTERS + COUNTS -->
                    <div class="filter-row">
 
                         <!-- LEFT SIDE -->
@@ -404,6 +409,8 @@
                                 <asp:BoundField DataField="TBIL_AMT" HeaderText="BILL AMNT" />
                                 <asp:BoundField DataField="TBIL_AMT_REC" HeaderText="REC AMNT" />
                                 <asp:BoundField DataField="TBIL_AMT_DIF" HeaderText="DIFFERENCE" />
+
+                                <asp:BoundField DataField="DC_DT" HeaderText="DC DATE" DataFormatString="{0:dd-MMM-yy}" />
 
                                 <asp:BoundField DataField="MBIL_AMT" HeaderText="MAINT" />
                                 <asp:BoundField DataField="EBIL_AMT" HeaderText="ELEC" />

@@ -108,7 +108,7 @@ public partial class Pages_Record : System.Web.UI.Page
             //string rcFrom = txtRCFrom.Text.Trim();
             //string rcTo = txtRCTo.Text.Trim();
 
-            using (OracleConnection con = new OracleConnection(connStrMNT))
+            using (OracleConnection con = new OracleConnection(connStrMNT)) 
             {
                 con.Open();
 
@@ -142,7 +142,7 @@ public partial class Pages_Record : System.Web.UI.Page
                         AND (:barcode IS NULL OR BARCODE LIKE '%' || :barcode || '%')
                         AND (:precinct IS NULL OR PRCNT_NM LIKE '%' || :precinct || '%')
                         AND (:dcFrom IS NULL OR DC_DT >= TO_DATE(:dcFrom, 'YYYY-MM-DD'))
-                        AND (:dcTo IS NULL OR DC_DT <= TO_DATE(:dcTo, 'YYYY-MM-DD'))", con))
+                        AND (:dcTo IS NULL OR DC_DT < TO_DATE(:dcTo, 'YYYY-MM-DD') + 1)", con))
                 {
                     countCmd.BindByName = true;
 
@@ -169,14 +169,14 @@ public partial class Pages_Record : System.Web.UI.Page
                         MBIL_AMT, EBIL_AMT, WBIL_AMT, GBIL_AMT, RBIL_AMT, BBIL_AMT,
                         MBIL_AMT_REC, EBIL_AMT_REC, WBIL_AMT_REC, GBIL_AMT_REC,
                         RBIL_AMT_REC, BBIL_AMT_REC,
-                        IS_DC, IS_RC, RC_TMP
+                        IS_DC, DC_DT, IS_RC, RC_TMP
                     FROM (
                         SELECT 
                             BARCODE, RESNAME, ADDRESS, PRCNT_NM, BLOCK_NM, TBIL_AMT, TBIL_AMT_REC, TBIL_AMT_DIF,
                             MBIL_AMT, EBIL_AMT, WBIL_AMT, GBIL_AMT, RBIL_AMT, BBIL_AMT,
                             MBIL_AMT_REC, EBIL_AMT_REC, WBIL_AMT_REC, GBIL_AMT_REC,
                             RBIL_AMT_REC, BBIL_AMT_REC,
-                            IS_DC, IS_RC, RC_TMP,
+                            IS_DC, DC_DT, IS_RC, RC_TMP,
         
                             ROW_NUMBER() OVER (ORDER BY TBIL_AMT DESC) AS RN
 
@@ -187,8 +187,9 @@ public partial class Pages_Record : System.Web.UI.Page
                             AND (:barcode IS NULL OR BARCODE LIKE '%' || :barcode || '%')
                             AND (:precinct IS NULL OR PRCNT_NM LIKE '%' || :precinct || '%')
                             AND (:dcFrom IS NULL OR DC_DT >= TO_DATE(:dcFrom, 'YYYY-MM-DD'))
-                            AND (:dcTo IS NULL OR DC_DT <= TO_DATE(:dcTo, 'YYYY-MM-DD'))
+                            AND (:dcTo IS NULL OR DC_DT < TO_DATE(:dcTo, 'YYYY-MM-DD') + 1)
                     )
+
                     WHERE RN BETWEEN :StartRow AND :EndRow
                     ORDER BY RN", con))
                 {
@@ -245,7 +246,7 @@ public partial class Pages_Record : System.Web.UI.Page
             /* ROW 1 - CLIENT DETAILS (The Main Frozen Header) */
             TableHeaderCell clientHeader = new TableHeaderCell();
             clientHeader.Text = "CLIENT DETAILS";
-            clientHeader.ColumnSpan = 9;
+            clientHeader.ColumnSpan = 10;
             clientHeader.HorizontalAlign = HorizontalAlign.Center;
             row1.Cells.Add(clientHeader);
 
@@ -276,7 +277,6 @@ public partial class Pages_Record : System.Web.UI.Page
     {
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
-
             // Get IS_DC Value
             int isDisconnected = Convert.ToInt32(DataBinder.Eval(e.Row.DataItem, "IS_DC"));
 
@@ -302,7 +302,6 @@ public partial class Pages_Record : System.Web.UI.Page
             {
                 e.Row.CssClass = "approved-reconnect-row";
             }
-
         }
     }    
 
