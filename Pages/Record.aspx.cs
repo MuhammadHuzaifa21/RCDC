@@ -115,7 +115,10 @@ public partial class Pages_Record : System.Web.UI.Page
                 // COUNT: DC / RC
                 OracleCommand countStats = new OracleCommand(@"
                         SELECT 
-                            SUM(CASE WHEN IS_DC = 1 OR IS_DC = 2 OR IS_DC = 3 THEN 1 ELSE 0 END) AS DC_COUNT,
+                            SUM(CASE WHEN IS_DC = 1 THEN 1 ELSE 0 END) AS DC_COUNT,
+                            SUM(CASE WHEN IS_DC = 2 THEN 1 ELSE 0 END) AS ILLEGAL_COUNT,
+                            SUM(CASE WHEN IS_DC = 3 THEN 1 ELSE 0 END) AS ADC_COUNT,
+                            SUM(CASE WHEN RC_TMP = 1 THEN 1 ELSE 0 END) AS APP_RC_COUNT,
                             SUM(CASE WHEN IS_RC = 1 THEN 1 ELSE 0 END) AS RC_COUNT
                         FROM DCRC", con);
 
@@ -124,6 +127,10 @@ public partial class Pages_Record : System.Web.UI.Page
                     if (dr.Read())
                     {
                         lblDCCount.Text = dr["DC_COUNT"].ToString();
+                        lblIllegalCount.Text = dr["Illegal_COUNT"].ToString();
+                        lblADCCount.Text = dr["ADC_COUNT"].ToString();
+
+                        lblAppRCCount.Text = dr["APP_RC_COUNT"].ToString();
                         lblRCCount.Text = dr["RC_COUNT"].ToString();
                     }
                 }
@@ -303,21 +310,9 @@ public partial class Pages_Record : System.Web.UI.Page
                 e.Row.CssClass = "approved-reconnect-row";
             }
         }
-    }    
+    }        
 
-    protected void btnClear_Click(object sender, EventArgs e)
-    {
-        txtSearchBarcode.Text = "";
-        txtSearchPrecinct.Text = "";
-        txtDCFrom.Text = "";
-        txtDCTo.Text = "";
-        //txtRCFrom.Text = "";
-        //txtRCTo.Text = "";
-
-        gvRecords.PageIndex = 0;
-        LoadGrid(1);
-    }
-
+    /* BUTTONS */
     protected void btnExportDC_Click(object sender, EventArgs e)
     {
         using (OracleConnection con = new OracleConnection(connStrMNT))
@@ -326,9 +321,51 @@ public partial class Pages_Record : System.Web.UI.Page
 
             string sql = @"
             SELECT * FROM DCRC
-            WHERE IS_DC = 1 OR IS_DC = 2 OR IS_DC = 3";
+            WHERE IS_DC = 1 AND IS_RC != 0";
 
             ExportCsv(sql, "DC.csv", con);
+        }
+    }
+
+    protected void btnExportIllegal_Click(object sender, EventArgs e)
+    {
+        using (OracleConnection con = new OracleConnection(connStrMNT))
+        {
+            con.Open();
+
+            string sql = @"
+            SELECT * FROM DCRC
+            WHERE IS_DC = 2 AND IS_RC != 0";
+
+            ExportCsv(sql, "ILLEGAL.csv", con);
+        }
+    }
+
+    protected void btnExportADC_Click(object sender, EventArgs e)
+    {
+        using (OracleConnection con = new OracleConnection(connStrMNT))
+        {
+            con.Open();
+
+            string sql = @"
+            SELECT * FROM DCRC
+            WHERE IS_DC = 3 AND IS_RC != 0";
+
+            ExportCsv(sql, "ADC.csv", con);
+        }
+    }
+
+    protected void btnExportAppRC_Click(object sender, EventArgs e)
+    {
+        using (OracleConnection con = new OracleConnection(connStrMNT))
+        {
+            con.Open();
+
+            string sql = @"
+            SELECT * FROM DCRC
+            WHERE RC_TMP = 1";
+
+            ExportCsv(sql, "Approved_RC.csv", con);
         }
     }
 
@@ -344,6 +381,19 @@ public partial class Pages_Record : System.Web.UI.Page
 
             ExportCsv(sql, "RC.csv", con);
         }
+    }
+
+    protected void btnClear_Click(object sender, EventArgs e)
+    {
+        txtSearchBarcode.Text = "";
+        txtSearchPrecinct.Text = "";
+        txtDCFrom.Text = "";
+        txtDCTo.Text = "";
+        //txtRCFrom.Text = "";
+        //txtRCTo.Text = "";
+
+        gvRecords.PageIndex = 0;
+        LoadGrid(1);
     }
 
     /* EXPORT CSV */

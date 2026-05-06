@@ -77,6 +77,7 @@
             display: flex;
             align-items: flex-start;
             align-self: center;
+            margin-right: 10px;
         }
 
         /* INPUT */
@@ -160,7 +161,7 @@
             transition: background 0.25s ease, box-shadow 0.25s ease;
         }
 
-        .export-btn:hover { background: #1ab394; box-shadow: 0 3px 10px rgba(26,179,148,0.35); }
+        .export-btn:hover { background: #333; box-shadow: 0 3px 10px rgba(26,179,148,0.35); }
 
         /* DEFAULT TEXT — slides out to the LEFT */
         .export-btn .default-text {
@@ -194,6 +195,9 @@
 
         .export-btn:hover .hover-text { transform: translateX(0); opacity: 1; } 
         .export-btn .hover-text svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+        .RC { background-color: #357033; }
+        .DC { background-color: #8b3535; }
 
         /* ─────────────────── */
 
@@ -242,12 +246,13 @@
         .grid-pager a,
         .grid-pager span { margin: 0 5px; padding: 6px 10px; border-radius: 5px; text-decoration: none; border: 1px solid #ccc; color: #333; }
         .grid-pager span { background: #2f4050; color: white; font-weight: bold; }
-        .grid-pager td:nth-child(9) { background: #f3f4f6; color: white; font-weight: 600; }
+        .grid-pager td:nth-child(9) { background: #f3f4f6; color: white; }
+        .grid-pager td:nth-child(10) { background: #f3f4f6; color: white; }
         .grid-pager tr:hover { background: #f3f4f6; }
 
-        .disconnected-row { background-color: #ffe6e6 !important; }         /* Red - for IS_DC = 1 */        
-        .updated-row { background-color: #ffeaa7 !important; }              /* Yellow - for IS_DC = 2 */        
-        .adc-row { background-color: #efc46a !important; }                  /* Orange - for IS_DC = 3 */        
+        .disconnected-row { background-color: #ffe6e6 !important; }         /* Red - for IS_DC = 1 - DC */       
+        .updated-row { background-color: #ffeaa7 !important; }              /* Yellow - for IS_DC = 2 - ADC */        
+        .adc-row { background-color: #efc46a !important; }                  /* Orange - for IS_DC = 3 - ILLEGAL */        
         .approved-reconnect-row { background-color: #cffbb8 !important; }   /* Green - for RC_TMP = 1 */
 
         /* LEGEND BAR */
@@ -344,7 +349,7 @@
                             <div class="count-section">
 
                                 <asp:LinkButton ID="btnExportDC" runat="server"
-                                    CssClass="count-box export-btn"
+                                    CssClass="count-box export-btn DC"
                                     OnClick="btnExportDC_Click">
                                     <span class="default-text">
                                         DC: <asp:Label ID="lblDCCount" runat="server" />
@@ -352,8 +357,35 @@
                                     <span class="hover-text">EXPORT</span>
                                 </asp:LinkButton>
 
+                                <asp:LinkButton ID="btnADC" runat="server"
+                                    CssClass="count-box export-btn DC"
+                                    OnClick="btnExportADC_Click">
+                                    <span class="default-text">
+                                        ADC: <asp:Label ID="lblADCCount" runat="server" />
+                                    </span>
+                                    <span class="hover-text">EXPORT</span>
+                                </asp:LinkButton>
+
+                                <asp:LinkButton ID="LinkButton2" runat="server"
+                                    CssClass="count-box export-btn DC"
+                                    OnClick="btnExportIllegal_Click">
+                                    <span class="default-text">
+                                        Illegal: <asp:Label ID="lblIllegalCount" runat="server" />
+                                    </span>
+                                    <span class="hover-text">EXPORT</span>
+                                </asp:LinkButton>
+
+                                <asp:LinkButton ID="btnExportAppRC" runat="server"
+                                    CssClass="count-box export-btn RC"
+                                    OnClick="btnExportAppRC_Click">
+                                    <span class="default-text">
+                                        Approved RC: <asp:Label ID="lblAppRCCount" runat="server" />
+                                    </span>
+                                    <span class="hover-text">EXPORT</span>
+                                </asp:LinkButton>
+
                                 <asp:LinkButton ID="btnExportRC" runat="server"
-                                    CssClass="count-box export-btn"
+                                    CssClass="count-box export-btn RC"
                                     OnClick="btnExportRC_Click">
                                     <span class="default-text">
                                         RC: <asp:Label ID="lblRCCount" runat="server" />
