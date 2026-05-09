@@ -45,6 +45,8 @@ public partial class Pages_Record : System.Web.UI.Page
         }
     }
 
+    // 08021
+
     private bool HasFormAccess()
     {
         int userId;
@@ -66,7 +68,7 @@ public partial class Pages_Record : System.Web.UI.Page
         }
 
         // ✅ Allowed users list
-        int[] allowedUsers = { 1, 17101 };
+        int[] allowedUsers = { 1, 17101, 24193, 02364, 7211, 8021, 13026 }; // NEW USER ACCESS
 
         if (!allowedUsers.Contains(userId))
         {
@@ -176,14 +178,14 @@ public partial class Pages_Record : System.Web.UI.Page
                         MBIL_AMT, EBIL_AMT, WBIL_AMT, GBIL_AMT, RBIL_AMT, BBIL_AMT,
                         MBIL_AMT_REC, EBIL_AMT_REC, WBIL_AMT_REC, GBIL_AMT_REC,
                         RBIL_AMT_REC, BBIL_AMT_REC,
-                        IS_DC, DC_DT, IS_RC, RC_TMP
+                        IS_DC, DC_DT, IS_RC, RC_TMP, DC_IMG, IC_IMG, RC_IMG 
                     FROM (
                         SELECT 
                             BARCODE, RESNAME, ADDRESS, PRCNT_NM, BLOCK_NM, TBIL_AMT, TBIL_AMT_REC, TBIL_AMT_DIF,
                             MBIL_AMT, EBIL_AMT, WBIL_AMT, GBIL_AMT, RBIL_AMT, BBIL_AMT,
                             MBIL_AMT_REC, EBIL_AMT_REC, WBIL_AMT_REC, GBIL_AMT_REC,
                             RBIL_AMT_REC, BBIL_AMT_REC,
-                            IS_DC, DC_DT, IS_RC, RC_TMP,
+                            IS_DC, DC_DT, IS_RC, RC_TMP, DC_IMG, IC_IMG, RC_IMG,
         
                             ROW_NUMBER() OVER (ORDER BY TBIL_AMT DESC) AS RN
 
@@ -276,6 +278,15 @@ public partial class Pages_Record : System.Web.UI.Page
             row1.Cells.Add(bill_amnt_rec);
 
             gv.Controls[0].Controls.AddAt(0, row1);
+
+            /* ROW 1 - C4 */
+            TableHeaderCell images = new TableHeaderCell();
+            images.Text = "IMAGES";
+            images.ColumnSpan = 3;
+            images.HorizontalAlign = HorizontalAlign.Center;
+            row1.Cells.Add(images);
+
+            gv.Controls[0].Controls.AddAt(0, row1);
         }
     }
 
@@ -311,6 +322,7 @@ public partial class Pages_Record : System.Web.UI.Page
             }
         }
     }        
+    // 08021
 
     /* BUTTONS */
     protected void btnExportDC_Click(object sender, EventArgs e)
@@ -321,7 +333,7 @@ public partial class Pages_Record : System.Web.UI.Page
 
             string sql = @"
             SELECT * FROM DCRC
-            WHERE IS_DC = 1 AND IS_RC != 0";
+            WHERE IS_DC = 1 AND IS_RC != 1";
 
             ExportCsv(sql, "DC.csv", con);
         }
@@ -335,7 +347,7 @@ public partial class Pages_Record : System.Web.UI.Page
 
             string sql = @"
             SELECT * FROM DCRC
-            WHERE IS_DC = 2 AND IS_RC != 0";
+            WHERE IS_DC = 2 AND IS_RC != 1";
 
             ExportCsv(sql, "ILLEGAL.csv", con);
         }
@@ -349,7 +361,7 @@ public partial class Pages_Record : System.Web.UI.Page
 
             string sql = @"
             SELECT * FROM DCRC
-            WHERE IS_DC = 3 AND IS_RC != 0";
+            WHERE IS_DC = 3 AND IS_RC != 1";
 
             ExportCsv(sql, "ADC.csv", con);
         }

@@ -215,32 +215,69 @@
         .grid-style tr:hover { background: #eef5ff; }
         .grid-style td:nth-child(9) { background-color: #fff7cc; /* light yellow - DIFF */ }    
         .grid-style td:nth-child(10) { background-color: white; /* white - DC DATE */ }     
-        
-        /* 1st column 
-        .grid-style th:nth-child(1),
-        .grid-style td:nth-child(1) {
-            position: sticky;
-            left: 0;
-            z-index: 3;
-        }
 
-        /* 2nd column 
-        .grid-style th:nth-child(2),
-        .grid-style td:nth-child(2) {
-            position: sticky;
-            left: 53px; 
-            z-index: 3;
-        }
+        /*.grid-style img { object-fit: cover; border-radius: 4px; border: 1px solid #ccc; cursor: pointer; transition: 0.2s ease; }
+        .grid-style img:hover { transform: scale(1.08); }*/
 
-        /* 3rd column 
-        .grid-style th:nth-child(3),
-        .grid-style td:nth-child(3) {
-            position: sticky;
-            left: 160px;
-            z-index: 3;
-            background: white;
-        }
-            */
+        /* IMAGE */
+        .grid-img {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.grid-img:hover {
+    transform: scale(1.08);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+}
+
+/* IMAGE PREVIEW MODAL */
+.image-modal {
+    display: none;
+    position: fixed;
+    z-index: 99999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.85);
+    justify-content: center;
+    align-items: center;
+}
+
+.image-modal img {
+    width: auto;
+    max-width: 850px;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 8px;
+    background: white;
+    padding: 6px;
+    box-shadow: 0 0 25px rgba(255,255,255,0.25);
+}
+
+#previewImage {
+    image-rendering: auto;
+}
+
+.close-preview {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.close-preview:hover {
+    color: #ff4d4d;
+}
 
         .grid-pager { text-align: center; padding: 10px; background: #f3f4f6; position: sticky; bottom: 0; }
         .grid-pager a,
@@ -458,6 +495,45 @@
                                 <asp:BoundField DataField="RBIL_AMT_REC" HeaderText="RENT" />
                                 <asp:BoundField DataField="BBIL_AMT_REC" HeaderText="BNB" />
 
+                                <asp:TemplateField HeaderText="DC">
+                                    <ItemTemplate>
+                                        <asp:Panel ID="Panel1" runat="server"
+                                            Visible='<%# !string.IsNullOrWhiteSpace(Convert.ToString(Eval("DC_IMG"))) %>'>
+
+                                            <img class="grid-img"
+                                                src='<%# "http://116.71.130.3:2942/RCDCTest/uploads/disconnection_images/" + Eval("DC_IMG") %>'
+                                                onclick='openImagePreview(this.src)' />
+
+                                        </asp:Panel>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+
+                                <asp:TemplateField HeaderText="IC">
+                                    <ItemTemplate>
+                                        <asp:Panel ID="Panel2" runat="server"
+                                            Visible='<%# !string.IsNullOrWhiteSpace(Convert.ToString(Eval("IC_IMG"))) %>'>
+
+                                            <img class="grid-img"
+                                                src='<%# "http://116.71.130.3:2942/RCDCTest/uploads/illegalconnection_images/" + Eval("IC_IMG") %>'
+                                                onclick='openImagePreview(this.src)' />
+
+                                        </asp:Panel>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+
+                                <asp:TemplateField HeaderText="RC">
+                                    <ItemTemplate>
+                                        <asp:Panel ID="Panel3" runat="server"
+                                            Visible='<%# !string.IsNullOrWhiteSpace(Convert.ToString(Eval("RC_IMG"))) %>'>
+
+                                            <img class="grid-img"
+                                                src='<%# "http://116.71.130.3:2942/RCDCTest/uploads/reconnection_images/" + Eval("RC_IMG") %>'
+                                                onclick='openImagePreview(this.src)' />
+
+                                        </asp:Panel>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+
                             </Columns>
                         </asp:GridView>
                     </div>
@@ -478,7 +554,45 @@
             </div>
         </div>
 
+        <!-- IMAGE PREVIEW MODAL -->
+        <div id="imagePreviewModal" class="image-modal">
+
+            <span class="close-preview" onclick="closeImagePreview()">
+                &times;
+            </span>
+
+            <img id="previewImage" />
+
+        </div>
+
     </form>
+
+    <%--/* JAVASCRIPT */--%>
+    <script>
+
+        function openImagePreview(imageUrl) {
+
+            document.getElementById("previewImage").src = imageUrl + "?t=" + new Date().getTime();
+            document.getElementById("imagePreviewModal").style.display = "flex";
+        }
+
+        function closeImagePreview() {
+
+            document.getElementById("imagePreviewModal").style.display = "none";
+        }
+
+        // CLOSE ON OUTSIDE CLICK
+        window.onclick = function (event) {
+
+            var modal = document.getElementById("imagePreviewModal");
+
+            if (event.target === modal) {
+                closeImagePreview();
+            }
+        };
+
+    </script>
+
 </body>
 </html>
  
